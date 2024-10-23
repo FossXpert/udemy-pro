@@ -1,0 +1,38 @@
+.admin-container{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    min-height: 100%;
+    /* border: 1px solid black; */
+    gap: 10px;
+}
+.admin-container-mini{
+    display: flex;
+    flex-direction: column;
+    width: 82%;
+    background-color: #f5f5f5;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 1px;
+    margin-left: 0.8rem;
+}
+.admin-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width : 100%;
+    height : 70px;
+    background-color: #fff;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 1px;
+    padding: 0 8%;
+}
+.admin-header-notification{
+    /* border: 1px solid; */
+}
+.admin-content{
+    display: flex;
+    justify-content: center;
+    border: 1px solid rgb(85, 223, 16);
+    width: 100%;
+    height: 100%;
+}

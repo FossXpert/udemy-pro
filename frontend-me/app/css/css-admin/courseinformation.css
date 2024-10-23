@@ -1,0 +1,110 @@
+.course-information-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 1px solid rgb(170, 29, 29); */
+    width: 100%;
+    height: 100%;
+}
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 1px solid green; */
+    width: 75%;
+    height: 100%;
+    padding: 0.5rem;
+}
+
+.input-box-1 {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.input-label {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.group-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 75px;
+    gap: .5rem;
+    /* border: 1px solid blue; */
+}
+
+.group-2,.group-4,.group-5 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 199px;
+    gap: 0.5rem;
+    /* border: 1px solid blue; */
+}
+.group-4{
+    height: 145px;
+}
+.group-5{
+    align-items: center;
+    height: 115px;
+    border: 1px solid violet;
+    padding: 0.5rem;
+}
+.group-5:hover{
+    box-shadow: 0 0 8px;
+}
+
+.input-textarea-1,
+.input-textarea-2 {
+    width: 100%;
+    height: min-content;
+    outline: none;
+    resize: none;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+
+}
+
+.group-3 {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* border: 1px solid blue; */
+    justify-content: space-between;
+    gap: 4%;
+}
+
+.group-3-1,
+.group-3-2 {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 75px;
+    /* border: 1px solid blue; */
+    gap: 0.5rem;
+}
+.input-box-image-1{
+    /* border : 1px solid black; */
+    display : hidden;
+}
+.create-course-buttons{
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    height: 80px;
+    width:100%;
+    /* border: 1px solid orange; */
+}
