@@ -41,9 +41,6 @@ cloudinary.v2.config({
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on port ${process.env.PORT}`);
     connectDB();
-    console.log(hostname.name)
-    console.log(process.env.PORT)
-    console.log('http://localhost:3004')
 })
 
 app.use('/api/user',userRouter);
