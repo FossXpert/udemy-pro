@@ -5,7 +5,7 @@ import Hero from './main/Hero';
 
 type Props = {
 }
-
+//j
 const Page = (props: Props) => {
   const [open,setOpen] = useState(false);
   const [route,setRoute] = useState('signin');
