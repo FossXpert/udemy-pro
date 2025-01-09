@@ -18,48 +18,43 @@ import cartRouter from "./routes/cartRouter";
 
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
-app.use(
-    cors({
-        origin: [
-            "http://localhost:3000",
-            "https://udemy-pro.vercel.app",
-            "http://localhost:9002",
-            "https://3000-idx-udemy-progit-1736352955958.cluster-7ubberrabzh4qqy2g4z7wgxuw2.cloudworkstations.dev/",
-            "http://100.93.3.137:3000",
-            "http://localhost:3001",
-        ],
-        credentials: true,
-    })
-);
 
-    cloudinary.v2.config({
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET
-    })
 
-    app.listen(process.env.PORT, () => {
-        console.log(`Server is running on port ${process.env.PORT}`);
-        connectDB();
-    })
+app.use(cors({
+    origin: ["http://localhost:3000",
+            "https://udemy-pro.vercel.app"], // Add your frontend URL here
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+}));
 
-    app.use('/api/user', userRouter);
-    app.use('/api/course', courseRouter);
-    app.use('/api/order', orderRouter);
-    app.use('/api/notification', notificationRouter);
-    app.use('/api/analytics', analyticsRouter);
-    app.use('/api/layout', layoutRouter);
-    app.use('/api/cart', cartRouter);
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
-    app.use(errorMiddleware);
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
+    connectDB();
+})
 
-    app.get('/', (req: Request, res: Response, next: NextFunction) => {
-        res.status(200).json({
-            message: "Valid Empty Route",
-        })
+app.use('/api/user', userRouter);
+app.use('/api/course', courseRouter);
+app.use('/api/order', orderRouter);
+app.use('/api/notification', notificationRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/layout', layoutRouter);
+app.use('/api/cart', cartRouter);
+
+app.use(errorMiddleware);
+
+app.get('/', (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json({
+        message: "Valid Empty Route",
     })
-    app.all('*', (req: Request, res: Response, next: NextFunction) => {
-        res.status(404).json({
-            message: "Invalid Route",
-        })
+})
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+    res.status(404).json({
+        message: "Invalid Route",
     })
+})
