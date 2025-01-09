@@ -22,13 +22,11 @@ app.use(
     cors({
         origin: [
             "http://localhost:3000",
-            "https://udemy-pro.vercel.app/",
+            "https://udemy-pro.vercel.app",
             "http://localhost:9002",
             "https://3000-idx-udemy-progit-1736352955958.cluster-7ubberrabzh4qqy2g4z7wgxuw2.cloudworkstations.dev/",
             "http://100.93.3.137:3000",
             "http://localhost:3001",
-            "https://udemy-p1pe1f8p6-rahul-rays-projects.vercel.app/",
-            "https://udemy-49bdjjmlv-rahul-rays-projects.vercel.app/",
         ],
         credentials: true,
     })
