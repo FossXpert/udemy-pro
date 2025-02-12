@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Header2 from './components/Header2';
 import Hero from './main/Hero';
 
+export const bo = 'border border-solid border-black'
 type Props = {
 }
 //j
@@ -11,7 +12,7 @@ const Page = (props: Props) => {
   const [route,setRoute] = useState('signin');
   
   return (
-    <div>
+    <div className={`flex flex-col justify-center items-center`}>
       {/* <Heading/> */}
       <Header2
       open={open}
