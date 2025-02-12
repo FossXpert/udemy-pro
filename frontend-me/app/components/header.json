@@ -1,0 +1,35 @@
+{
+    "navigation": [
+      {
+        "label": "Home",
+        "href": "#",
+        "status": "active",
+        "hidden": false
+      },
+      {
+        "label": "Course",
+        "href": "/all/courses",
+        "status": "active",
+        "hidden": false
+      },
+      {
+        "label": "About",
+        "href": "#",
+        "status": "inactive",
+        "hidden": false
+      },
+      {
+        "label": "Policy",
+        "href": "#",
+        "status": "inactive",
+        "hidden": false
+      },
+      {
+        "label": "FAQ",
+        "href": "#",
+        "status": "inactive",
+        "hidden": true
+      }
+    ]
+  }
+  

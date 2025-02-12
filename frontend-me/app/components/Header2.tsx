@@ -14,6 +14,7 @@ import useScreenSize from "../../redux/features/screenSize/hook/useScreenSize";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import header from './header.json'
 
 type Props = {
   open: boolean;
@@ -76,11 +77,15 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
             <Image src={zoom} alt="" />
           </div>
           <div className="container3">
-            <ul><Link className='no-underline text-black' href={'#'}>Home</Link></ul>
-            <ul><Link className='no-underline text-black' href={'/all/courses'}>Course</Link></ul>
-            <ul><Link className='no-underline text-black' href={'#'}>About</Link></ul>
-            <ul><Link className='no-underline text-black' href={'#'}>Policy</Link></ul>
-            <ul><Link className='no-underline text-black' href={'#'}>FAQ</Link></ul>
+          {
+            header.navigation.filter((item)=>item.hidden === false).map((value, index) => (
+                <ul key={index}>
+                  <Link className='no-underline text-black hover:text-purple-400' href={`${value.href}`}>
+                    {value.label}
+                  </Link>
+                </ul>
+            ))
+          }
           </div>
           <div className="container4">
             <div className='icon-1'>

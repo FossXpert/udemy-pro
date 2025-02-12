@@ -9,3 +9,5 @@ const Hero = (props: Props) => {
 }
 
 export default Hero
+
+// #892DE1
