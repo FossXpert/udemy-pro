@@ -2,7 +2,7 @@
     "carousel": [
       {
         "id": 1,
-        "imageLink": "https://example.com/image1.jpg",
+        "imageLink": "/caraousel-images/x.jpg",
         "imageName": "Course Promo 1",
         "active": true,
         "altText": "Learn JavaScript with top instructors",
@@ -11,18 +11,18 @@
       },
       {
         "id": 2,
-        "imageLink": "https://example.com/image2.jpg",
+        "imageLink": "/caraousel-images/x1.jpg",
         "imageName": "Web Development Bootcamp",
-        "active": false,
+        "active": true,
         "altText": "Full-stack development made easy",
         "description": "Become a full-stack web developer with this all-in-one course.",
         "link": "/course/web-development"
       },
       {
         "id": 3,
-        "imageLink": "https://example.com/image3.jpg",
+        "imageLink": "/caraousel-images/x1.jpg",
         "imageName": "Python for Beginners",
-        "active": false,
+        "active": true,
         "altText": "Start your Python journey today",
         "description": "A beginner-friendly course to kickstart your Python skills.",
         "link": "/course/python"
