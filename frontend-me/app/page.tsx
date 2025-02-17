@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Header2 from './components/Header2';
 import Hero from './main/Hero';
 
-export const bo = ''
 type Props = {
 }
 //j
