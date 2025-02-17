@@ -103,7 +103,7 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
                     </div>
                   ) : isSuccess && data?.user?.avatar ? ( // Ensure data exists and is successful
                     <Link href={'/profile'}>
-                      <Image className={`rounded-full border-solid border-purple-300`} width={45} height={35} src={data.user.avatar.url} alt="Profile" />
+                      <Image className={`rounded-full`} width={35} height={28} src={data.user.avatar.url} alt="Profile" />
                     </Link>
                   ) : (
                     <MdOutlineLogin onClick={() => handleIologin()} />

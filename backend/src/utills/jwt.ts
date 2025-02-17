@@ -16,8 +16,17 @@ export interface iTokenOptions{
 const accessTokenExp = parseInt(process.env.ACCESS_EXP_TIME || '300', 10) * 60 * 1000; // Convert minutes to milliseconds
 const refreshTokenExp = parseInt(process.env.REFRESH_EXP_TIME || '1200', 10) * 60 * 1000; // Convert minutes to milliseconds
 
+// Function to get IST time (UTC +5:30)
+const getISTDate = (duration: number): Date => {
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // Convert 5.5 hours to milliseconds
+    const dateNow = new Date(now.getTime() + duration + istOffset)
+    console.log("dateNow",dateNow)
+    return dateNow;
+};
+
 export const accessTokenOptions: iTokenOptions = {
-    expires: new Date(Date.now() + accessTokenExp),
+    expires: getISTDate(accessTokenExp),
     httpOnly: true,
     maxAge: accessTokenExp, // Should be in milliseconds
     sameSite: 'none',
@@ -25,12 +34,13 @@ export const accessTokenOptions: iTokenOptions = {
 };
 
 export const refreshTokenOptions: iTokenOptions = {
-    expires: new Date(Date.now() + refreshTokenExp),
+    expires: getISTDate(refreshTokenExp),
     httpOnly: true,
     maxAge: refreshTokenExp, // Should be in milliseconds
     sameSite: 'none',
     secure: process.env.NODE_ENV === 'production' // Set secure flag in production only
 };
+
 
 export const sendToken = async(user : iUser,statusCode : number,res:Response) => {
     const accessToken =  await user.signAccessToken(); // it has effect
