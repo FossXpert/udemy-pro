@@ -12,27 +12,32 @@ export interface iTokenOptions{
     secure? : boolean;
 }
 
-const accessTokenExp = parseInt(process.env.ACCESS_EXP_TIME || '300',10);
-const refreshTokenExp = parseInt(process.env.REFRESH_EXP_TIME || '1200',10);
+// Convert expiration time correctly (Assuming process.env values are in minutes)
+const accessTokenExp = parseInt(process.env.ACCESS_EXP_TIME || '300', 10) * 60 * 1000; // Convert minutes to milliseconds
+const refreshTokenExp = parseInt(process.env.REFRESH_EXP_TIME || '1200', 10) * 60 * 1000; // Convert minutes to milliseconds
 
-export const accessTokenOptions : iTokenOptions = {
-        expires : new Date(Date.now() + accessTokenExp *60 *60* 1000),
-        httpOnly : true,
-        maxAge : accessTokenExp * 60 * 60 * 1000,
-        sameSite : 'lax',
-}
-export const refreshTokenOptions : iTokenOptions = {
-        expires : new Date(Date.now() + refreshTokenExp * 60 * 60 * 1000),
-        httpOnly : true,
-        maxAge : refreshTokenExp *24* 1000 *60 *60 ,
-        sameSite : 'lax',
-}
+export const accessTokenOptions: iTokenOptions = {
+    expires: new Date(Date.now() + accessTokenExp),
+    httpOnly: true,
+    maxAge: accessTokenExp, // Should be in milliseconds
+    sameSite: 'none',
+    secure: process.env.NODE_ENV === 'production' // Set secure flag in production only
+};
+
+export const refreshTokenOptions: iTokenOptions = {
+    expires: new Date(Date.now() + refreshTokenExp),
+    httpOnly: true,
+    maxAge: refreshTokenExp, // Should be in milliseconds
+    sameSite: 'none',
+    secure: process.env.NODE_ENV === 'production' // Set secure flag in production only
+};
 
 export const sendToken = async(user : iUser,statusCode : number,res:Response) => {
     const accessToken =  await user.signAccessToken(); // it has effect
     const refreshToken = await user.signRefreshToken();// 
 
-    console.log(accessToken,refreshToken)
+    console.log("Access Token:", accessToken);
+    console.log("Refresh Token:", refreshToken);
 
     //upload session to redis
     redis?.set(user._id,JSON.stringify(user) as any);

@@ -20,7 +20,7 @@
       },
       {
         "id": 3,
-        "imageLink": "/caraousel-images/x1.jpg",
+        "imageLink": "https://s.udemycdn.com/teaching/billboard-desktop-v4.jpg",
         "imageName": "Python for Beginners",
         "active": true,
         "altText": "Start your Python journey today",
