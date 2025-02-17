@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { bo } from '../page'
 import caraousel from './carousel.json'
 import Image from 'next/image'
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md'
@@ -24,9 +23,9 @@ const Hero = (props: Props) => {
 
   return (
     <>
-      <div className={` ${bo} caraousel flex gap-4 w-auto h-auto mt-[2%] items-center`}>
+      <div className={` caraousel flex gap-4 w-auto h-auto mt-[2%] items-center`}>
         <MdArrowLeft onClick={() => slidePrev()} className={`text-2xl cursor-pointer p-0 m-0`} />
-        <div className={` ${bo} caraousel flex flex-col gap-1 items-center w-full h-[auto] overflow-x-auto `}>
+        <div className={` caraousel flex flex-col gap-1 items-center w-full h-[auto] overflow-x-auto `}>
           {
             images.map((value, index) => (
               <>
