@@ -48,6 +48,7 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
       toast.success("Logged In");
       // router.push("/")
       handleClose();
+      window.location.reload();
     }
     if(loginError){
       if("data" in loginError){
