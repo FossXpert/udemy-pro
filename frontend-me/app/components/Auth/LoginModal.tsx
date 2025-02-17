@@ -6,8 +6,6 @@ import { FaRegWindowClose } from 'react-icons/fa';
 import { FaApple, FaGithub, FaGoogle } from 'react-icons/fa6';
 import Link from 'next/link';
 // import { useRouter } from 'next/router';
-
-
 import { z } from 'zod';
 import { useFormik } from 'formik';
 import { useLoginMutation, 

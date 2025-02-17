@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import header from './header.json'
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type Props = {
   open: boolean;
@@ -95,12 +96,19 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
               <MdShoppingCartCheckout onClick={()=>handleCart()} />
             </div>
             <div className='icon-1'>
-              {
-                data ? (data.user.avatar ? <Link href={'/profile'}>
-                    <Image width={20} height={20} src={data.user.avatar.url} alt="No"/>
-                </Link>: <CgProfile onClick={() => handleProfile()} /> ):
-                <MdOutlineLogin onClick={() => handleIologin()} />
-              }
+              { 
+                  isLoading ? ( // While loading, show a skeleton or spinner
+                    <div className="loader">
+                      <Image width={45} height={45} src='/loaders/login-loader.gif' alt="" />
+                    </div>
+                  ) : isSuccess && data?.user?.avatar ? ( // Ensure data exists and is successful
+                    <Link href={'/profile'}>
+                      <Image className={`rounded-full border-solid border-purple-300`} width={45} height={35} src={data.user.avatar.url} alt="Profile" />
+                    </Link>
+                  ) : (
+                    <MdOutlineLogin onClick={() => handleIologin()} />
+                  )
+                }
             </div>
           </div>
           {
