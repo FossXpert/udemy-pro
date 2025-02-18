@@ -39,30 +39,29 @@ const Course = () => {
           route={route}
           setRoute={setRoute}
         /> 
-      <div className={`flex items-center gap-6 flex-wrap w-full h-full`}>
-
+        {isLoading && <p className="text-gray-500">Loading Courses...</p> }
         <div className={`flex items-center justify-center gap-6 flex-wrap w-full h-full`}>
-          {
-            data?.Allcourses.map((value:any,index:number)=>(
-              <CourseCard
-              id={value._id} 
-              key={index}
-              name={value.name}
-              postedBy={value.postedBy}
-              price={value.price}
-              estimatedPrice={value.estimatedPrice}
-              tags={value.tags}
-              thumbnail={value.thumbnail}
-              level={value.level}
-              demoUrl={value.demoUrl}
-              totalVideos={value.totalVideos}
-              />
-            ))
-          }
+            {data?.Allcourses.length > 0 ? (
+              data.Allcourses.map((value: any, index: number) => (
+                  <CourseCard
+                    key={index}
+                    id={value._id}
+                    name={value.name}
+                    postedBy={value.postedBy}
+                    price={value.price}
+                    estimatedPrice={value.estimatedPrice}
+                    tags={value.tags}
+                    thumbnail={value.thumbnail}
+                    level={value.level}
+                    demoUrl={value.demoUrl}
+                    totalVideos={value.totalVideos}
+                  />
+              ))
+            ) : (
+              !isLoading && <p className="text-gray-500">No courses available.</p>
+            )}
         </div>
       </div>
-      </div>
-
     </>
   )
 }
