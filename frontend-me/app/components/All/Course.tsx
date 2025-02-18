@@ -12,13 +12,10 @@ const Course = () => {
   const [open,setOpen] = useState(false);
   const [route, setRoute] = useState('signin');
 
-  const {data,error,isLoading} = useGetallcourseQuery({},{refetchOnMountOrArgChange:true});
+  const {data,error,isLoading,refetch} = useGetallcourseQuery({},{refetchOnMountOrArgChange:true});
   
 
   useEffect(()=>{
-    if(isLoading){
-      toast.success("isLoading");
-    }
     if(data){
       toast.success("Data fetched successfully");
     }
@@ -27,8 +24,12 @@ const Course = () => {
         const errorMessage = error as any;
         toast.error(errorMessage.data.message);
       }
+      if ('status' in error && error.status === 400) {
+        console.log("Session expired, refreshing token...");
+        refetch();
+      }
     }
-  },[]);
+  },[error]);
 
   return (
     <>
@@ -40,7 +41,7 @@ const Course = () => {
           setRoute={setRoute}
         /> 
         {isLoading && <p className="text-gray-500">Loading Courses...</p> }
-        <div className={`flex items-center justify-center gap-6 flex-wrap w-full h-full`}>
+        <div className={`flex items-center justify-center gap-6 flex-wrap w-full h-full mt-[8%] sm:mt-[1%]`}>
             {data?.Allcourses.length > 0 ? (
               data.Allcourses.map((value: any, index: number) => (
                   <CourseCard

@@ -28,7 +28,6 @@ type Props = {
     totalVideos : string;
 }
 const border = '';
-const shadow = 'shadow-md shadow-black'
 const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos}) => {
   
   const [addToCart,{isSuccess,isLoading,error}] = useAddToCartMutation();
@@ -66,10 +65,10 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
   
   return (
     <>
-        <div onClick={handleOnClick} className={`flex flex-col bg-[rgb(249,250,251)] w-[250px] h-[310px] p-2 ${border} !border-[#ccc] rounded-sm shadow-md shadow-grey-700`}>
+        <div onClick={handleOnClick} className={`flex flex-col bg-[rgb(249,250,251)] w-[250px] h-[310px] p-2 ${border} border-[1px] border-solid border-gray-300 rounded-sm shadow-md shadow-grey-700`}>
             <div className={`flex flex-col w-full h-[185px] ${border}`}>
             <Link href={`courses/${id}`} className='no-underline text-black'>
-              <Image src={thumbnail?.url} alt='text' width={250} height={185}/>
+              <Image src={thumbnail?.url || ''} alt='text' width={250} height={185}/>
             </Link>
             </div>
             <div className={`flex flex-col w-full h-[125px] ${border} !border-red-500`}>
@@ -80,8 +79,8 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
                 <p className={`m-0 text-[0.7rem] font-[400] text-[rgb(82,82,82)]`}>{postedBy?.name}</p>
               </div>
               <div className={`flex w-full h-[25px] mt-1 justify-between items-center ${border}`}>
-                  <div className={`flex w-[65px] h-[22px] bg-[rgb(225,244,232)] justify-center leading-5 rounded-[9999px] ${border}`}>
-                    <p className={`text-[.85rem] m-0 text-[rgb(21,168,61)] font-semibold`}>{level}</p>
+                  <div className={`flex w-[full] h-[auto] bg-[rgb(225,244,232)] justify-center leading-5 rounded-[9999px] ${border}`}>
+                    <p className={`text-[.85rem] px-1 text-[rgb(21,168,61)] font-semibold`}>{level}</p>
                   </div>
                   <div className={`flex w-auto h-[22px] justify-center ${border}`}>
                   <Rating
@@ -98,10 +97,10 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
                   {price === estimatedPrice ? (
                     <p className={`m-0 text-[0.8rem] font-semibold text-[rgb(82,82,82)]`}>${price}</p>
                   ) : (
-                    <p className={`m-0 text-[0.8rem] font-semibold text-[rgb(82,82,82)]`}> 
+                    <p className={`flex m-0 text-[0.8rem] gap-2 font-semibold text-[rgb(82,82,82)]`}> 
                     ${price}
-                     <span className={`text-[rgb(82,82,82)] line-through`}>${estimatedPrice}
-                     </span>
+                     {estimatedPrice && <span className={`text-[rgb(82,82,82)] line-through`}>${estimatedPrice}
+                     </span>}
                     </p>
                   )}
                 </div>

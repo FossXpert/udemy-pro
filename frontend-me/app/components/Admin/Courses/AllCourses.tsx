@@ -29,6 +29,9 @@ const AllCourses = (props: Props) => {
           const errorMesage = error as any;
           toast.error(errorMesage.data.message)
       }
+      if('status' in error && error.status === 400){
+          refetch();
+      }
   }
   },[isSuccess,error])
 
@@ -97,12 +100,12 @@ const AllCourses = (props: Props) => {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box className=' justify-center items-center bg-gray-200 p-2 rounded-[8px] shadow-lg w-[280px] h-[40%]'>
+              <Box className=' justify-center items-center bg-gray-200 p-2 rounded-[8px] shadow-lg w-[280px] h-[35%]'>
                 <h2 className={`flex mt-8 ml-4`}>
                   Are You Sure You want to delete this user ?
                 </h2>
-                <div className='flex justify-between pl-4 pr-4 mt-16 h-[75px]'>
-                    <button className='button-global' onClick={handleDelete}>Delete</button>
+                <div className='flex justify-between pl-4 pr-4 mt-8'>
+                    <button className='button-global' onClick={()=>handleDelete()}>{deleteLoading ?`Deleting...`:`Delete`}</button>
                     <button className='button-global' type='submit' onClick={()=>setOpen(!open)}>Cancel</button>
                 </div>
               </Box>

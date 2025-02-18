@@ -31,8 +31,15 @@ const CoursePreview: FC<Props> = ({id}) => {
   console.log(selectedVideoUrl)
 
   useEffect(() => {
-    if (error) {
-      toast.error('Failed to load course data.');
+    if(error){
+      if('data' in error){
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
+      if ('status' in error && error.status === 400) {
+        console.log("Session expired, refreshing token...");
+        refetch();
+      }
     }
   }, [error]);
 
@@ -45,7 +52,7 @@ const CoursePreview: FC<Props> = ({id}) => {
   }
 
 
-  if (!courseData) {
+  if (!data?.course) {
     return <p>No course data available.</p>;
   }
 
