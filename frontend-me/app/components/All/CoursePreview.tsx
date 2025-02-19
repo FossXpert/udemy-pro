@@ -22,13 +22,21 @@ const CoursePreview: FC<Props> = ({id}) => {
     refetchOnMountOrArgChange: true,
   });
 
-  const courseData = data?.course; // Assuming your API returns an object with a "course" field
-  const courseSectionCount = courseData?.courseData.length;
-  toast.success("Course Section Count : "+courseSectionCount);
-  const [courseSectionCountDropDown,setCourseSectionCountDropDown] = useState(Array(courseSectionCount).fill(false));
+  const [courseSectionCountDropDown, setCourseSectionCountDropDown] = useState<boolean[]>([]);
   const [isExpanded,setIsExpanded] = useState(false);
   const [selectedVideoUrl,setSelectedVideoUrl] = useState<string>("https://www.youtube.com/embed/4VSUrwbd0Jw?si=2spqWH3AgFbb32Jq")
-  console.log(selectedVideoUrl)
+  const [courseData,setCourseData]=useState<any>(null);
+
+  useEffect(() => {
+    if(data){
+      setCourseData(data.course)
+    }
+    if (data?.course?.courseData) {
+      const sectionCount = data.course.courseData.length;
+      toast.success("Course Section Count: " + sectionCount);
+      setCourseSectionCountDropDown(new Array(sectionCount).fill(false));
+    }
+  }, [data]);
 
   useEffect(() => {
     if(error){
@@ -43,21 +51,6 @@ const CoursePreview: FC<Props> = ({id}) => {
     }
   }, [error]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error loading course data. Please try again later.</p>;
-  }
-
-
-  if (!data?.course) {
-    return <p>No course data available.</p>;
-  }
-
-  
-
   const handleTextExpansion = (text:string,limit:number) => {
     if(text.length <=limit) return text;
 
@@ -65,9 +58,8 @@ const CoursePreview: FC<Props> = ({id}) => {
   }
   return (
     <>
-    {/* <button type='submit' onClick={()=>handleSubmit()}>Submit</button>
-    <button type='submit' onClick={()=>createCourseFinal()}>Create</button> */}
-    <div className='flex flex-col h-full w-full items-center 
+    {isLoading && <p>Loading...</p>}
+    {courseData && <div className='flex flex-col h-full w-full items-center 
       heheblack'>
       <h1 className=''>Course Preview</h1>
       <div className='flex w-[97%] items-center flex-col h-full hehegreen'>
@@ -169,8 +161,7 @@ const CoursePreview: FC<Props> = ({id}) => {
           </div>
           </div>
           <div className='flex w-[30%] h-full heheblack'>
-            hi
-          </div>
+\         </div>
         </div>
       </div>
           {/* <div className='flex justify-between w-full h-[75px]'>
@@ -178,7 +169,7 @@ const CoursePreview: FC<Props> = ({id}) => {
             <button className='button-global mr-6 mt-2' onClick={()=>createCourseFinal()}>Create</button>
           </div> */}
       </div>
-    </div>
+    </div>}
     </>
   );
 };
