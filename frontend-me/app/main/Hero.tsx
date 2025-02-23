@@ -26,7 +26,7 @@ const Hero = (props: Props) => {
       />
       <div className="relative w-[90vw] h-[auto] overflow-hidden flex items-center justify-center">
         <div 
-          className="flex transition-transform duration-500 ease-in-out"
+          className="flex transition-transform duration-800 ease-in-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
           {images.map((value, index) => (
