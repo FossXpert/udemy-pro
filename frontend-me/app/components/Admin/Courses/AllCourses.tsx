@@ -102,8 +102,8 @@ const AllCourses = (props: Props) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <Box className="flex flex-col justify-center items-center bg-gray-200 p-4 rounded-[8px] shadow-lg w-[280px] h-[35%]">
-              <p className="text-center text-[1.5rem] w-full font-semibold">
+            <Box className="flex flex-col justify-center items-center bg-gray-200 p-4 rounded-[8px] shadow-lg w-[280px] h-[full]">
+              <p className="text-center w-full font-semibold">
                 Are you sure you want to delete this course?
               </p>
               <div className="flex justify-between w-full px-4 mt-8">
