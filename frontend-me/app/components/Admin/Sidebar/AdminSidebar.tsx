@@ -1,209 +1,126 @@
 import Image from 'next/image';
-import React, { FC, useState } from 'react'
-import { JSX } from 'react';
-import profileImage from '../../../assets/thumnail.png'
-import '../../../css/css-admin/adminSidebar.css'
+import React, { useState } from 'react';
 import { MdDashboard } from 'react-icons/md';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useSelector } from 'react-redux';
-import { FaBullseye } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import profileImage from '../../../assets/thumnail.png';
+import '../../../css/css-admin/adminSidebar.css';
 
-// type Props = {
-//     active : number;
-//     setActive : (active:number) => void; 
-// }
-
-interface MenuItems {
-    menuTitle: string;
-    menuIcon: JSX.Element;
-    link: string;
-    subMenu: SubMenuItems[];
-    active: boolean;
-    open: boolean;
-    dropDownIcon: JSX.Element;
-}
 interface SubMenuItems {
     subMenuTitle: string;
     subMenuIcon: JSX.Element;
     subMenuLink: string;
-    subMenuActive: boolean;
-    subMenuNumber : number;
+    subMenuNumber: number;
 }
+
+interface MenuItems {
+    menuTitle: string;
+    menuIcon: JSX.Element;
+    link?: string;
+    subMenu?: SubMenuItems[];
+    active?: boolean;
+    open?: boolean;
+}
+
 const AdminSidebar = () => {
-    const [active, setActive] = useState(0);
     const { user } = useSelector((state: any) => state.auth);
+    const router = useRouter();
+    const [active, setActive] = useState<number | null>(null);
     const [menuItems, setMenuItems] = useState<MenuItems[]>([
         {
             menuTitle: 'Dashboard',
             menuIcon: <MdDashboard className='icon' />,
-            link: '#',
-            active: true,
+            link: '/admin/dashboard',
+            active: false,
             open: false,
-            dropDownIcon: <IoIosArrowDown />,
             subMenu: [],
         },
         {
             menuTitle: 'Courses',
             menuIcon: <MdDashboard className='icon' />,
-            link: '#',
-            active: true,
-            open: false,
-            dropDownIcon: <IoIosArrowDown />,
             subMenu: [
                 {
-                    subMenuTitle: 'All Course',
-                    subMenuActive: true,
+                    subMenuTitle: 'All Courses',
                     subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: 'admin/all-courses',
+                    subMenuLink: '/admin/all-courses',
                     subMenuNumber: 1,
                 },
                 {
                     subMenuTitle: 'Create Course',
-                    subMenuActive: true,
                     subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: 'admin/create-course',
+                    subMenuLink: '/admin/create-course',
                     subMenuNumber: 2,
-
                 },
-                
             ],
-        },
-        {
-            menuTitle: 'Dashboard-1',
-            menuIcon: <MdDashboard className='icon' />,
-            link: '#',
-            active: true,
             open: false,
-            dropDownIcon: <IoIosArrowDown />,
-            subMenu: [
-                {
-                    subMenuTitle: 'sub1',
-                    subMenuActive: true,
-                    subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: '#',
-                    subMenuNumber : 3,
-                },
-                {
-                    subMenuTitle: 'sub2',
-                    subMenuActive: true,
-                    subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: '#',
-                    subMenuNumber : 4,
-                },
-                {
-                    subMenuTitle: 'sub3',
-                    subMenuActive: true,
-                    subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: '#',
-                    subMenuNumber : 5,
-                }
-            ],
         },
-        {
-            menuTitle: 'Dashboard-1',
-            menuIcon: <MdDashboard className='icon' />,
-            link: '#',
-            active: true,
-            open: false,
-            dropDownIcon: <IoIosArrowDown />,
-            subMenu: [
-                {
-                    subMenuTitle: 'sub1',
-                    subMenuActive: true,
-                    subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: '#',
-                    subMenuNumber : 0,
-                },
-                {
-                    subMenuTitle: 'sub2',
-                    subMenuActive: true,
-                    subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: '#',
-                    subMenuNumber : 0,
-                },
-                {
-                    subMenuTitle: 'sub3',
-                    subMenuActive: true,
-                    subMenuIcon: <MdDashboard className='icon' />,
-                    subMenuLink: '#',
-                    subMenuNumber : 0,
-                }
-            ],
-        }
     ]);
 
-    // This approach allow us to open multiple dropdowns
+    // Toggle Menu & Submenus
     const handleToggle = (index: number) => {
-        const newMenuItems = [...menuItems];
-        newMenuItems[index].open = !newMenuItems[index].open;
-        setMenuItems(newMenuItems);
+        setMenuItems((prev) =>
+            prev.map((item, i) =>
+                i === index ? { ...item, open: !item.open } : { ...item, open: false }
+            )
+        );
     };
 
-    const handleOnClick = (index:number) => {
-
-    }
-
-    // const router = useRouter()
-    //This approach allow us to open only one dropdown
-    // const handleToggle = (index:number) => {
-    //   setMenuItems((prevMenuItems) =>
-    //     prevMenuItems.map((value,i)=>
-    //       i===index ? {...value,open : !value.open} : {...value, open : false}
-    //     ))
-    //   } 
-
+    // Handle Navigation
+    const handleNavigation = (link?: string, subMenuNumber?: number) => {
+        if (link) {
+            router.push(link);
+            setActive(subMenuNumber || null);
+        }
+    };
 
     return (
-        <>
-            <div className="assidebar">
-                <div className="ashead">
-                    <div className="asuser-image">
-                        <Image width={35} src={profileImage} alt='No' />
-                    </div>
-                    <div className="asuser-details">
-                        <p className='astitle'>Senior Admin</p>
-                        <p className='asname'>{user.name}</p>
-                    </div>
+        <aside className="assidebar">
+            <div className="ashead">
+                <div className="asuser-image">
+                    <Image width={35} src={profileImage} alt="Profile" />
                 </div>
-                <div className="asnav">
-                    <div className="asmenu">
-                        {
-                            menuItems.map((value, index) => (
-                                <ul key={index}>
-                                    <li className={value.active ? 'active' : 'disabled'} >
-                                        <Link href={value.link}>
-                                            {value.menuIcon}
-                                            {<span className='as-span-text' onClick={() => handleToggle(index)} >{value.menuTitle}</span>}
-                                            {value.subMenu.length > 0 &&
-                                                (value.open ?
-                                                    (<IoIosArrowUp className='arrow' onClick={() => handleToggle(index)} />)
-                                                    : (<IoIosArrowDown className='arrow' onClick={() => handleToggle(index)} />)
-                                                )}
-                                        </Link>
-                                        {value.subMenu.length > 0 && <ul className={value.open ? 'assub-menu' : 'disabled'}>
-                                            {
-                                                value.subMenu.map((value, index) => (
-                                                    <li key={index}>
-                                                        <Link href={value.subMenuLink} onClick={() => setActive(value.subMenuNumber)}>
-                                                            {value.subMenuIcon}
-                                                            <span className='as-span-text'>{value.subMenuTitle}</span>
-                                                        </Link>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>}
-                                    </li>
-                                </ul>
-                            ))
-                        }
-                    </div>
+                <div className="asuser-details">
+                    <p className="astitle">Senior Admin</p>
+                    <p className="asname">{user?.name}</p>
                 </div>
             </div>
-        </>
-    )
-}
 
+            {/* Navigation Menu */}
+            <nav className="asnav">
+                <div className="asmenu">
+                    {menuItems.map((item, index) => (
+                        <ul key={index}>
+                            <li className={item.active ? 'active' : ''}>
+                                {/* Main Menu  */}
+                                <div className="asmenu" onClick={() => handleNavigation(item.link)}>
+                                    {item.menuIcon}
+                                    <span className="as-span-text">{item.menuTitle}</span>
+                                    {item.subMenu && (
+                                        <span onClick={(e) => { e.stopPropagation(); handleToggle(index); }}>
+                                            {item.open ? <IoIosArrowUp className="arrow" /> : <IoIosArrowDown className="arrow" />}
+                                        </span>
+                                    )}
+                                </div>
+
+                                {/* Submenu Items */}
+                                {item.subMenu && item.open && (
+                                    <ul className="assub-menu">
+                                        {item.subMenu.map((subItem, subIndex) => (
+                                            <li key={subIndex} onClick={() => handleNavigation(subItem.subMenuLink, subItem.subMenuNumber)}>
+                                                {subItem.subMenuIcon}
+                                                <span className="as-span-text">{subItem.subMenuTitle}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </li>
+                        </ul>
+                    ))}
+                </div>
+            </nav>
+        </aside>
+    );
+};
 
 export default AdminSidebar;

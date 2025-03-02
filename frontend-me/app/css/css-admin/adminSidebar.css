@@ -48,7 +48,7 @@
 /* ------------ */
 .asnav {
     /* border: 1px solid black; */
-   
+
     width: 100%;
     height: 100vh;
     display: flex;
@@ -62,7 +62,7 @@
     margin-top : 10px;
 }
 
-.asmenu ul li a {
+.asmenu ul li div {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -75,7 +75,7 @@
     
 }
 
-.asmenu ul li.active a {
+.asmenu ul li.active div {
     cursor: pointer;
 }
 
@@ -103,17 +103,17 @@
     padding-bottom: 5px;
 }
 
-.asmenu .assub-menu li a {
+.asmenu .assub-menu li div {
     padding: 10px 8px;
     font-size: 14.5px;
     color: #757575;
 }
 
-.asmenu .assub-menu li a:hover {
+.asmenu .assub-menu li div:hover {
     color: #7F56D9;
     background-color: #fff;
 }
-.asmenu .assub-menu li a:focus {
+.asmenu .assub-menu li div:focus {
     color: #7F56D9;
     background-color: #fff;
 }

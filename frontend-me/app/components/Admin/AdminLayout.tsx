@@ -26,8 +26,6 @@ const AdminLayout = () => {
         <div className='admin-content'>
           {active === 1 && <AllCourses/>}
           {active === 2 && <CreateCourse/>}
-          {active === 3 && <h1>Admin Content-2</h1>}
-          {active === 4 && <h1>Admin Content-3</h1>}
         </div>
       </div>
     </div>
