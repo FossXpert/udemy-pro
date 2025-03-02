@@ -6,12 +6,21 @@ import Image from 'next/image'
 import { MdAccountCircle, MdHome, MdLogout } from 'react-icons/md'
 import { IoBagCheck, IoLogOut } from 'react-icons/io5'
 import { RiAdminFill, RiAdminLine, RiLockPasswordFill } from 'react-icons/ri'
+import { useRouter } from 'next/navigation';
+
 type Props = {
 active : number;
 setActive : (active:number) => void;
 }
 
 const SideBarProfile:FC<Props> = ({active,setActive}) => {
+  const router = useRouter(); // Correct router usage
+
+  const handleLogout = () => {
+      localStorage.removeItem("access_token"); // Remove token
+      sessionStorage.removeItem("refresh_token"); // If using sessionStorage
+      router.push("/"); // Redirect to home or login page
+  };
 
   const {sSize} = useSelector((state:any)=>state.screen);
   const {user} = useSelector((state:any) => state.auth);
@@ -62,7 +71,7 @@ const SideBarProfile:FC<Props> = ({active,setActive}) => {
                 <div className='sidebar-icon-box'>
                   <IoLogOut className='sidebar-icons'/>
                 </div>
-              <p className='sidebar-text'>Logout</p>
+              <p className='sidebar-text' onClick={()=>handleLogout()}>Logout</p>
               </div>
             }
           </div>

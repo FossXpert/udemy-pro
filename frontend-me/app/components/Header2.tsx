@@ -2,7 +2,7 @@
 import { FC, useEffect, useState } from "react"
 import '../css/header2.css';
 import { FaCartShopping, FaFacebook, FaInstagram, FaMagnifyingGlass, FaXTwitter } from "react-icons/fa6";
-import zoom from '../assets/zoom.png';
+import zoom from '../assets/zoom.webp';
 import Image from "next/image";
 import { CgProfile } from "react-icons/cg";
 import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
@@ -61,7 +61,7 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
       <div className="header">
         <div className="container">
           <div className="container2">
-            <Image src={zoom} alt="" />
+          <Image className='cursor-pointer' onClick={()=>router.push('/')} src="https://frontends.udemycdn.com/frontends-homepage/staticx/udemy/images/v7/logo-udemy.svg" alt="Udemy" width="91" height="34" loading="lazy"/>
           </div>
           <div className="container1">
             <div className='icon'>
