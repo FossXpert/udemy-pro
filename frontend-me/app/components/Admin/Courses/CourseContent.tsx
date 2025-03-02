@@ -42,7 +42,7 @@ const CourseContent: FC<Props> = ({handleSubmit : handleCourseSubmit, active, se
       description : "",
     }
     newCourseContentData.push({
-      videoSection : `Section : ${sectionIndex}`,
+      videoSection : `Untitled Section`,
       courseDataInside : [courseDataInside],
       suggestion : "",
     });
