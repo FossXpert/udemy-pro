@@ -34,7 +34,7 @@ const CourseContent: FC<Props> = ({handleSubmit : handleCourseSubmit, active, se
     newCourseContentData[index].videoSection = value;
     setCourseContentData(newCourseContentData);
   }
-  const handleVideoSectionAdd = () => {
+  const handleVideoSectionAdd = (sectionIndex:Number) => {
     const newCourseContentData = [...courseContentData];
     const courseDataInside = {
       videoUrl : "",
@@ -42,7 +42,7 @@ const CourseContent: FC<Props> = ({handleSubmit : handleCourseSubmit, active, se
       description : "",
     }
     newCourseContentData.push({
-      videoSection : "",
+      videoSection : `Section : ${sectionIndex}`,
       courseDataInside : [courseDataInside],
       suggestion : "",
     });
@@ -90,7 +90,7 @@ const CourseContent: FC<Props> = ({handleSubmit : handleCourseSubmit, active, se
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    // setActive(active+1);
+    setActive(active+1);
   }
 
   return (
@@ -99,10 +99,10 @@ const CourseContent: FC<Props> = ({handleSubmit : handleCourseSubmit, active, se
       <div className='flex w-full h-full
        items-center flex-col border border-solid border-blue-500'>
         <h1 className=''>Course Content</h1>
-        <div className='flex w-3/4 flex-col h-auto border border-solid border-green-500'>
+        <div className='flex w-3/4 flex-col h-auto'>
           {
             courseContentData.map((value,sectionIndex) => (
-              <div key={sectionIndex} className='flex flex-col w-full h-full p-2 m-2 border border-solid border-orange-500 shadow-sm'>
+              <div key={sectionIndex} className='flex flex-col w-full h-full p-2 m-2 shadow-sm'>
                 <div className='flex w-full h-full p-2 m-2 border border-solid border-black-500 shadow-sm'>
                   <input
                   type='text'
@@ -110,8 +110,7 @@ const CourseContent: FC<Props> = ({handleSubmit : handleCourseSubmit, active, se
                   onChange={(e)=>handleVideoSectionChange(sectionIndex,e.target.value)}
                   className='w-[85%] text-xl font-semibold'/>
                   <div className='flex w-[15%] p-2 items-center h-auto flex-row border border-solid border-black-500 justify-between'>
-                  <IoMdArrowDropdownCircle/>
-                  <FaSquarePlus onClick={() => handleVideoSectionAdd()}/>
+                  <FaSquarePlus onClick={() => handleVideoSectionAdd(sectionIndex)}/>
                   {sectionIndex > 0 && <MdDelete onClick={()=>handleVideoSectionRemove(sectionIndex)}/>}
                   </div>
                 </div>

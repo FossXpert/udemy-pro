@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 type Props = {};
 
-const border = 'border border-solid border-black-600';
+const border = '';
 
 const AllCourses = (props: Props) => {
   const { isLoading, data, refetch } = useGetallcourseQuery({}, { refetchOnMountOrArgChange: true });

@@ -45,11 +45,11 @@ const CourseOptions:FC<Props> = ({active,setActive,benefits,setBenefits,prerequi
   }
   return (
     <div className='flex w-full h-full
-       items-center flex-col border border-solid border-blue-500'>
+       items-center flex-col border border-solid border-gray-300'>
       <h1 className=''>Course Options</h1>
       {/* class for form */}
-      <div className='flex w-3/4 flex-col h-auto border border-solid border-green-500'>
-        <div className='flex p-[0.5rem] gap-[0.5rem] border border-solid border-violet-300 w-full h-full
+      <div className='flex w-3/4 flex-col h-auto'>
+        <div className='flex p-[0.5rem] gap-[0.5rem] w-full h-full
           justify-start items-center flex-col'>
           <label className='text-[1rem]' htmlFor=''>What are the benefits for the student in this course</label>
           {
@@ -60,11 +60,11 @@ const CourseOptions:FC<Props> = ({active,setActive,benefits,setBenefits,prerequi
               </div>
             ))
           }
-          <div className='flex justify-center w-full border border-solid border-green-500'>
+          <div className='flex justify-center w-full'>
           <FaSquarePlus onClick={handleSetBenefit}/>
           </div>
         </div>
-        <div className='flex p-[0.5rem] gap-[0.5rem] border border-solid border-violet-300 w-full h-full
+        <div className='flex p-[0.5rem] gap-[0.5rem] w-full h-full
           justify-start items-center flex-col'>
           <label className='text-[1rem]' htmlFor=''>What are the prerequisites for the student in this course</label>
           {
@@ -75,7 +75,7 @@ const CourseOptions:FC<Props> = ({active,setActive,benefits,setBenefits,prerequi
               </div>
             ))
           }
-          <div className='flex justify-center w-full border border-solid border-green-500'>
+          <div className='flex justify-center w-full'>
           <FaSquarePlus onClick={handleSetPrerequisites}/>
           </div>
         </div>

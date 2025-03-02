@@ -20,8 +20,8 @@ const CourseStatusBar:FC<Props> = ({active,setActive}) => {
       {
         options.map((value,index)=>(
           <div key={index} className='status-box'>
-            <IoMdCheckmarkCircleOutline className='status-icon' onClick={()=>setActive(index+1)}/>
-            <p>{value}</p>
+            <IoMdCheckmarkCircleOutline key={index+1} className={`status-icon ${active !== index+1 ? '':'text-violet-500'}`} onClick={()=>setActive(index+1)}/>
+            <p className={`status-icon ${active !== index+1 ? '':'text-violet-500'}`}>{value}</p>
           </div>
         ))
       }
