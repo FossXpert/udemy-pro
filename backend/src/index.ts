@@ -21,12 +21,8 @@ app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 
 
-app.use(cors({
-    origin: ["http://localhost:3000",
-        "https://udemy-pro.vercel.app"], // Add your frontend URL here
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-}));
+app.use(cors({ origin: '*' })); // Allow all origins
+
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

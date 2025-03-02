@@ -21,12 +21,7 @@ const cartRouter_1 = __importDefault(require("./routes/cartRouter"));
 const mongoose_1 = __importDefault(require("mongoose"));
 app_1.app.use(express_1.default.json({ limit: '50mb' }));
 app_1.app.use((0, cookie_parser_1.default)());
-app_1.app.use((0, cors_1.default)({
-    origin: ["http://localhost:3000",
-        "https://udemy-pro.vercel.app"], // Add your frontend URL here
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-}));
+app_1.app.use((0, cors_1.default)({ origin: '*' })); // Allow all origins
 cloudinary_1.default.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
