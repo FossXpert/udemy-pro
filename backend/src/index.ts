@@ -15,6 +15,7 @@ import layoutRouter from "./routes/layoutRouter";
 import { hostname } from "os";
 import { Console } from "console";
 import cartRouter from "./routes/cartRouter";
+import mongoose from "mongoose";
 
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
@@ -22,7 +23,7 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: ["http://localhost:3000",
-            "https://udemy-pro.vercel.app"], // Add your frontend URL here
+        "https://udemy-pro.vercel.app"], // Add your frontend URL here
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
@@ -33,10 +34,14 @@ cloudinary.v2.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
-    connectDB();
-})
+connectDB().then(() => {
+    console.log("Server is starting...")
+    app.listen(process.env.PORT, () => {
+        console.log(`Server is running on port ${process.env.PORT}`);
+    })
+}).catch((error) => {
+    console.error("Server failed to start due to DB connection issue:", error);
+});
 
 app.use('/api/user', userRouter);
 app.use('/api/course', courseRouter);
@@ -53,6 +58,15 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
         message: "Valid Empty Route",
     })
 })
+app.get("/db", async (req, res) => {
+    const status = mongoose.connection.readyState;
+    const states = ["Disconnected", "Connected", "Connecting", "Disconnecting"];
+  
+    res.json({
+      statusCode: status,
+      status: states[status] || "Unknown",
+    });
+});
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({
         message: "Invalid Route",

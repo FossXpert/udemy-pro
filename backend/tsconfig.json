@@ -7,6 +7,6 @@
     "strict": true,
     "esModuleInterop": true   // Enable ES module interop
   },
-  "include": ["backend/**/*.ts"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules"]
 }
