@@ -129,8 +129,8 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
   // Formik instance for signin
   const signinFormik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: 'rahulray8516@gmail.com',
+      password: '123456',
     },
     validate: (values) => {
       try {

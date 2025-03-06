@@ -12,9 +12,10 @@ import { IoMdSearch } from "react-icons/io";
 import useScreenSize from "../../redux/features/screenSize/hook/useScreenSize";
 import { useSelector } from "react-redux";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import header from './header.json'
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { MdMenu, MdClose } from 'react-icons/md';
 
 type Props = {
   open: boolean;
@@ -30,6 +31,8 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
   const [openProfile, setOpenProfile] = useState(false);
   const { sSize, isMobile } = useSelector((state: any) => state.screen);
   const router = useRouter();
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     console.log(sSize, isMobile);
@@ -80,9 +83,12 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
           {
             header.navigation.filter((item)=>item.hidden === false).map((value, index) => (
                 <ul key={index}>
-                  <Link className='no-underline text-black hover:text-purple-400' href={`${value.href}`}>
+                  <button 
+                    className={`no-underline text-black text-[1.1rem] hover:text-purple-400 bg-transparent border-none cursor-pointer ${pathname === value.href ? 'text-purple-600 font-bold' : ''}`}
+                    onClick={() => router.push(value.href)}
+                  >
                     {value.label}
-                  </Link>
+                  </button>
                 </ul>
             ))
           }

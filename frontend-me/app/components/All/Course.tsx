@@ -3,6 +3,7 @@ import CourseCard from './CourseCard'
 import Header2 from '../Header2'
 import { useGetallcourseQuery } from '../../../redux/features/courses/courseApi'
 import toast from 'react-hot-toast'
+import {CardLoader} from '../../../app/util/CardLoader'
 
 type Props = {
 
@@ -40,7 +41,7 @@ const Course = () => {
           route={route}
           setRoute={setRoute}
         /> 
-        {isLoading && <p className="text-gray-500">Loading Courses...</p> }
+        {isLoading && <CardLoader length={12} />}
         <div className={`flex items-center justify-center gap-6 flex-wrap w-full h-full mt-[8%] sm:mt-[1%]`}>
             {data?.Allcourses.length > 0 ? (
               data.Allcourses.map((value: any, index: number) => (
