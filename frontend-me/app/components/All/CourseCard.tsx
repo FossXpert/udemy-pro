@@ -50,7 +50,7 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
   const handleOnClick = () => {
     console.log("Clicked");
     console.log("id is : ",id);
-  }
+  } 
     const handleAddToCart = async() =>{
       console.log(id)
       const data1 = await addToCart(id);

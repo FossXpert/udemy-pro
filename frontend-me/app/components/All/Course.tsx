@@ -17,9 +17,6 @@ const Course = () => {
   
 
   useEffect(()=>{
-    if(data){
-      toast.success("Data fetched successfully");
-    }
     if(error){
       if('data' in error){
         const errorMessage = error as any;
