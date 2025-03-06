@@ -67,7 +67,7 @@ const CoursePreview: FC<Props> = ({id}) => {
         <div className='flex w-[100%] h-full mt-2 mb-2 flex-col hehegreen'>
           {
             <iframe width="560" height="315" 
-            src={selectedVideoUrl} 
+            src={selectedVideoUrl? selectedVideoUrl : "https://www.youtube.com/embed/4VSUrwbd0Jw?si=2spqWH3AgFbb32Jq"} 
             title="YouTube video player" 
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -76,7 +76,7 @@ const CoursePreview: FC<Props> = ({id}) => {
             </iframe>
           }
         </div>
-        <div className='flex flex-col w-auto h-auto border border-solid border-green-500'>
+        <div className='flex flex-col w-auto h-auto border border-solid border-gray-300'>
           <p className='font-semibold text-[1.5rem]'>{courseData.name}</p>
           <div className='flex w-auto gap-2 items-center hehegreen'>
             <FaRupeeSign className='ml-2'/>
