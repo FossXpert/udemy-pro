@@ -164,10 +164,6 @@ const CoursePreview: FC<Props> = ({id}) => {
 \         </div>
         </div>
       </div>
-          {/* <div className='flex justify-between w-full h-[75px]'>
-            <button className='button-global ml-6 mt-2' onClick={()=>setActive(3)}>Prev</button>
-            <button className='button-global mr-6 mt-2' onClick={()=>createCourseFinal()}>Create</button>
-          </div> */}
       </div>
     </div>}
     </>
