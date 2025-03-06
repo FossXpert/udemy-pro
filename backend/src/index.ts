@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: ["http://localhost:3000",
-        "https://udemy-pro.vercel.app","http://100.93.3.137:3000/"], // Add your frontend URL here
+        "https://udemy-pro.vercel.app", "http://100.93.3.137:3000/"], // Add your frontend URL here
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
@@ -61,10 +61,10 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 app.get("/db", async (req, res) => {
     const status = mongoose.connection.readyState;
     const states = ["Disconnected", "Connected", "Connecting", "Disconnecting"];
-  
+
     res.json({
-      statusCode: status,
-      status: states[status] || "Unknown",
+        statusCode: status,
+        status: states[status] || "Unknown",
     });
 });
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

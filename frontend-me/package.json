@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 100.93.3.137",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -17,6 +17,7 @@
     "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
+    "framer-motion": "^12.4.10",
     "lucide-react": "^0.475.0",
     "mui": "^0.0.1",
     "next": "14.2.4",

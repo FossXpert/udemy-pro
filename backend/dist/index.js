@@ -23,7 +23,7 @@ app_1.app.use(express_1.default.json({ limit: '50mb' }));
 app_1.app.use((0, cookie_parser_1.default)());
 app_1.app.use((0, cors_1.default)({
     origin: ["http://localhost:3000",
-        "https://udemy-pro.vercel.app"], // Add your frontend URL here
+        "https://udemy-pro.vercel.app", "http://100.93.3.137:3000/"], // Add your frontend URL here
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
