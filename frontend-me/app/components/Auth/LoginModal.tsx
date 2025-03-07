@@ -266,7 +266,7 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
                     </div>
                     <div className="button">
                       <button type="submit" className="submit">
-                        Confirm
+                        {isLoading ? "Loading..." : "Confirm"}
                       </button>
                       <button
                         type="button"
@@ -338,7 +338,7 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
                     </div>
                     <div className="button">
                       <button type="submit" className="submit">
-                        Confirm
+                        {isLoading ? "Loading..." : "Confirm"}
                       </button>
                       <button
                         type="button"
