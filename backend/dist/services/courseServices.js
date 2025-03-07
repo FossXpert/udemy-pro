@@ -13,7 +13,7 @@ const redis_1 = __importDefault(require("../utills/redis"));
 const createCourse = async (data, req, res, next) => {
     try {
         const course = await course_1.default.create(data);
-        const categoryName = "ML";
+        const categoryName = "Technology";
         const cat = await category_1.default.findOne({ 'categories.categoryName': categoryName });
         const user = req.user;
         const userId = user._id;

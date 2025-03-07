@@ -11,7 +11,7 @@ import redis from '../utills/redis';
 export const createCourse = async(data:iCourse,req:Request,res:Response,next:NextFunction)=>{
     try {
         const course = await courseModel.create(data);
-        const categoryName : string = "ML";
+        const categoryName : string = "Technology";
         const cat = await categoryModel.findOne({'categories.categoryName':categoryName});
         const user = (req as jwtPayloadNew).user;
         const userId = user._id;
