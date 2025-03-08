@@ -5,7 +5,18 @@ import jwt, { Secret } from 'jsonwebtoken';
 import { iCourse } from "./course";
 
 const emailRegexPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
+interface PurchasedCourse {
+    courseId: string;
+    courseName?: string;
+    coursePostedBy?: string;
+    coursePrice?: number;
+    courseEstimatedPrice?: number;
+    courseTags?: string[];
+    courseThumbnail?: string;
+    courseLevel?: string;
+    courseDemoUrl?: string;
+    _id: string;
+}
 export interface iUser extends Document {
     name : string;
     email : string;
@@ -17,7 +28,7 @@ export interface iUser extends Document {
     role: string;
     isVerified: boolean;
     purchased: number;
-    courses: Array<{courseId: string}>;
+    courses: Array<PurchasedCourse>;
     comparePassword: (password: string) => Promise<boolean>;
     signRefreshToken: () => string;
     signAccessToken: () => string;
@@ -68,7 +79,15 @@ const userSchema = new Schema<iUser>({
     },
     courses:[
         {
-            courseId : String,
+            courseId: String,
+            courseName: String,
+            coursePostedBy: String,
+            coursePrice: Number,
+            courseEstimatedPrice: Number,
+            courseTags: [String],
+            courseThumbnail: String,
+            courseLevel: String,
+            courseDemoUrl: String
         }
     ],
     postedCourse:[

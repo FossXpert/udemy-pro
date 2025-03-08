@@ -88,14 +88,14 @@ export const getSingleCourse = catchAsyncError(async (req: Request, res: Respons
                 course: JSON.parse(course)
             })
         } else {
-            const courseMongo = await courseModel.findById(req.params.id);
-            if (!courseMongo) {
+            const course = await courseModel.findById(req.params.id);
+            if (!course) {
                 return next(new ErrorHandler('Failed to fetch single course', 400));
             }
-            // await redis?.set(req.params.id, JSON.stringify(courseMongo));
+            await redis?.set(req.params.id, JSON.stringify(course));
             return res.status(201).json({
                 success: true,
-                courseMongo
+                course
             })
         }
 
@@ -103,33 +103,51 @@ export const getSingleCourse = catchAsyncError(async (req: Request, res: Respons
         return next(new ErrorHandler(error.message, 400));
     }
 })
-
-export const getAllCourses = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+//Get all Courses
+export const getAllCourse = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
     try {
-        // const courses = await redis?.get('courses');
-        // if (courses) {
-        //     return res.status(201).json({
-        //         success: true,
-        //         Allcourses: JSON.parse(courses)
-        //     })
-        // }
-        // else {
-            const coursesMongo = await courseModel.find();
-            if (!coursesMongo) {
-                return next(new ErrorHandler('Failed to fetch all course', 400));
-            }
-            // await redis?.set('courses', JSON.stringify(coursesMongo));
-            return res.status(201).json({
-                success: true,
-                Allcourses: coursesMongo
-            })
-        // }
-
-    } catch (error: any) {
+        getAllCoursesService(res,next);
+    } catch (error:any) {
         return next(new ErrorHandler(error.message, 400));
     }
 })
 
+export const getAllCourses = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+            const coursesMongo = await courseModel.find();
+            if (!coursesMongo) {
+                return next(new ErrorHandler('Failed to fetch all course', 400));
+            }
+            return res.status(201).json({
+                success: true,
+                Allcourses: coursesMongo
+            })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+})
+//Delete Course - admin only
+
+export const deleteCourseById = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+        const {courseId} = req.params;
+        console.log(courseId);
+        const course = await courseModel.findById(courseId);
+        if(!course){
+            return next(new ErrorHandler('Course not found',400));
+        }
+        await course.deleteOne({courseId});
+        await redis?.del(courseId);
+        return res.status(200).json({
+            success : true,
+            message : "Course deleted SuccessFully"
+        })
+    } catch (error:any) {
+        return next(new ErrorHandler(error.message,400));
+    }
+})
+
+//wasted
 export const getCourseByUser = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userCourses = (req as jwtPayloadNew).user.courses;
@@ -375,37 +393,6 @@ export const reviewReply = catchAsyncError(async(req:Request,res:Response,next:N
     }
 });
 
-//Get all Courses
-export const getAllCourse = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
-    try {
-        getAllCoursesService(res,next);
-    } catch (error:any) {
-        return next(new ErrorHandler(error.message, 400));
-    }
-})
-
-//Delete Course - admin only
-
-export const deleteCourseById = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
-    try {
-        //courseId === _id here
-        const {courseId} = req.params;
-        console.log(courseId);
-        const course = await courseModel.findById(courseId);
-        if(!course){
-            return next(new ErrorHandler('Course not found',400));
-        }
-        await course.deleteOne({courseId});
-        const coursesMongo = await courseModel.find({}).select("-courseData.videoUrl -courseData.links -courseData.questions -courseData.suggestion -courseData.videoLength -courseData.videoPlayer ");
-        await redis?.set('courses', JSON.stringify(coursesMongo));        
-        return res.status(200).json({
-            success : true,
-            message : "Course deleted SuccessFully"
-        })
-    } catch (error:any) {
-        return next(new ErrorHandler(error.message,400));
-    }
-})
 
 export const generateVideoUrl = catchAsyncError(async(req:Request,res:Response,next:NextFunction) => {
     try {

@@ -29,12 +29,18 @@ exports.createOrder = (0, catchAsyncError_1.catchAsyncError)(async (req, res, ne
             return next(new errorHandlers_1.default(`Failed to fetch course`, 400));
         }
         const orderData = {
-            courseId: course._id,
-            userId: user._id,
-            payment_info: payment_info
+            courseId: courseId,
+            courseName: course.name,
+            coursePostedBy: course.postedBy?.name,
+            coursePrice: course.price,
+            courseEstimatedPrice: course.estimatedPrice,
+            courseTags: course.tags,
+            courseThumbnail: course.thumbnail,
+            courseLevel: course.level,
+            courseDemoUrl: course.demoUrl,
         };
         console.log('data : ', orderData);
-        user.courses.push({ courseId });
+        user.courses.push(orderData);
         if (course.purchased !== undefined) {
             course.purchased += 1;
         }
@@ -46,7 +52,7 @@ exports.createOrder = (0, catchAsyncError_1.catchAsyncError)(async (req, res, ne
         });
         await course.save();
         await user.save();
-        await (0, orderServices_1.newOrder)(orderData, res);
+        await (0, orderServices_1.newOrder)({ userId: user._id, courseId: courseId }, res);
         const order = await order_1.default.findOne({ userId: user._id }).sort({ createdAt: -1 });
         if (!order) {
             return next(new errorHandlers_1.default('Failed to retrieve latest order mate!', 400));

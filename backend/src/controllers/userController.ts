@@ -151,7 +151,7 @@ export const logoutUser = catchAsyncError(async(req:Request,res:Response,next:Ne
         res.cookie('refresh_token','',{maxAge:1});
         const requestUserID = (req as jwtPayloadNew).user._id
         console.log(requestUserID)
-        await redis?.del(requestUserID);
+        // await redis?.del(requestUserID);
         res.status(200).json({
             success : await success(res.statusCode),
             message : "Logged Out User Successfully",
@@ -172,21 +172,18 @@ export const updateAccessToken = catchAsyncError(async(req:Request,res:Response,
             return next(new ErrorHandler("Refresh token expired or not valid",400));
         }
 
-        const session = await redis?.get(decoded.id)
+        const session = await userModel.findById(decoded.id)
 
         if(!session){
             return next(new ErrorHandler("Session Expired Please Login again",400));
         }
-
-        const user = await JSON.parse(session);
+        const user = session;
 
         const access_token = jwt.sign({id:user._id},process.env.ACCESS_TOKEN as Secret,{expiresIn:'5m'});
         const new_refresh_token = jwt.sign({id:user._id},process.env.REFRESH_TOKEN as Secret,{expiresIn:'3d'} )
 
         await res.cookie('access_token',access_token,accessTokenOptions);
         await res.cookie("refresh_token",new_refresh_token,refreshTokenOptions);
-
-        await redis?.set(user._id,JSON.stringify(user),"EX",7*24*60*60);
         console.log("token refreshed")
         await next();
     } catch (error:any) {
@@ -254,7 +251,6 @@ export const updateUserInfo = catchAsyncError(async(req:Request,res:Response,nex
             return next(new ErrorHandler('user is null or undefined',400));
         }
         await user?.save();
-        await redis?.set(userId,JSON.stringify(user));
 
         res.status(201).json({
             success : await success(res.statusCode),
@@ -286,7 +282,6 @@ export const updatePassword = catchAsyncError(async(req:Request,res:Response,nex
         user.password = newPassword;
 
         await user.save();
-        await redis?.set((req as jwtPayloadNew).user._id,JSON.stringify(user));
         res.status(201).json({
             success : await success(res.statusCode),
             user : user
@@ -327,9 +322,7 @@ export const updateProfilePicture = catchAsyncError(async(req:Request,res:Respon
             url : myCloud.secure_url,
         }   
 
-        await user.save();
-        await redis?.set(userId,JSON.stringify(user));
-        
+        await user.save();        
         res.status(201).json({
             success : await success(res.statusCode),
             user : user
@@ -376,7 +369,6 @@ export const deleteUserById = catchAsyncError(async(req:Request,res:Response,nex
             return next(new ErrorHandler('User not found',400));
         }
         await user.deleteOne({userId});
-        await redis?.del(userId);
         return res.status(200).json({
             success : true,
             message : "User deleted SuccessFully"

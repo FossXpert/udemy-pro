@@ -7,7 +7,10 @@ exports.getAllOrdersService = exports.newOrder = void 0;
 const order_1 = __importDefault(require("../models/order"));
 const newOrder = async (data, res) => {
     try {
-        const order = await order_1.default.create(data);
+        const order = await order_1.default.create({
+            userId: data.userId,
+            courseId: data.courseId,
+        });
         return res.status(200).json({
             success: true,
             message: `You have successfully bought the course`,

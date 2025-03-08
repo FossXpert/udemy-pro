@@ -1,11 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendToken = exports.refreshTokenOptions = exports.accessTokenOptions = void 0;
 require('dotenv').config();
-const redis_1 = __importDefault(require("./redis"));
 // Convert expiration time correctly (Assuming process.env values are in minutes)
 const accessTokenExp = parseInt(process.env.ACCESS_EXP_TIME || '300', 10) * 60 * 1000; // Convert minutes to milliseconds
 const refreshTokenExp = parseInt(process.env.REFRESH_EXP_TIME || '1200', 10) * 60 * 1000; // Convert minutes to milliseconds
@@ -37,7 +33,7 @@ const sendToken = async (user, statusCode, res) => {
     console.log("Access Token:", accessToken);
     console.log("Refresh Token:", refreshToken);
     //upload session to redis
-    redis_1.default?.set(user._id, JSON.stringify(user));
+    // redis?.set(user._id,JSON.stringify(user) as any);
     if (process.env.NODE_ENV == 'production') {
         exports.accessTokenOptions.secure = true;
         exports.refreshTokenOptions.secure = true;

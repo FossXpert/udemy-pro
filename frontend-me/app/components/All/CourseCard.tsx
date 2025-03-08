@@ -26,9 +26,10 @@ type Props = {
     level : string;
     demoUrl : string;
     totalVideos : string;
+    cartDisable : boolean;
 }
 const border = '';
-const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos}) => {
+const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos,cartDisable}) => {
   
   const [addToCart,{isSuccess,isLoading,error}] = useAddToCartMutation();
   const {refetch} = useGetCartStatusQuery({},{refetchOnMountOrArgChange:true});
@@ -105,7 +106,7 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
                   )}
                 </div>
                 <div className='flex'>
-                  <button className='button-global !h-[1.5rem]' onClick={()=>handleAddToCart()}>Add to Cart</button>
+                  <button disabled={cartDisable} className='button-global !h-[1.5rem]' onClick={()=>handleAddToCart()}>{isLoading ? "Adding..." : "Add to Cart"}</button>
                 </div>
               </div>
             </div>

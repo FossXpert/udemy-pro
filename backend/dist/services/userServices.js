@@ -7,17 +7,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllUsersService = exports.getUserById = void 0;
 const catchAsyncError_1 = require("../middlewares/catchAsyncError");
 const errorHandlers_1 = __importDefault(require("../utills/errorHandlers"));
-const redis_1 = __importDefault(require("../utills/redis"));
 const user_1 = require("../models/user");
 const getUserById = async (id, res, next) => {
     try {
-        const user = await redis_1.default?.get(id);
+        const user = await user_1.userModel.findById(id);
         if (!user) {
             return next(new errorHandlers_1.default('Failed to retrieve user by ID', 400));
         }
-        const JsonUser = JSON.parse(user);
         return res.status(200).json({
-            success: await (0, catchAsyncError_1.success)(res.statusCode), user: JsonUser,
+            success: await (0, catchAsyncError_1.success)(res.statusCode),
+            user: user
         });
     }
     catch (error) {

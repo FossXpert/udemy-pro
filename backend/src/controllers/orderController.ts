@@ -28,12 +28,18 @@ export const createOrder = catchAsyncError(async(req:Request,res:Response,next:N
             return next(new ErrorHandler(`Failed to fetch course`,400));
         }
         const orderData : any = {
-                courseId  : course._id,
-                userId : user._id,
-                payment_info : payment_info
+                courseId  : courseId,
+                courseName : course.name,
+                coursePostedBy : course.postedBy?.name,
+                coursePrice : course.price,
+                courseEstimatedPrice : course.estimatedPrice,
+                courseTags : course.tags,
+                courseThumbnail : course.thumbnail as {url: string},
+                courseLevel : course.level,
+                courseDemoUrl : course.demoUrl,
         }       
         console.log('data : ',orderData); 
-        user.courses.push({courseId});
+        user.courses.push(orderData);
         if(course.purchased !== undefined){
             course.purchased+=1;
         }
@@ -45,7 +51,7 @@ export const createOrder = catchAsyncError(async(req:Request,res:Response,next:N
         })
         await course.save();
         await user.save();
-        await newOrder(orderData,res);
+        await newOrder({userId : user._id,courseId : courseId},res);
         const order = await orderModel.findOne({userId : user._id}).sort({createdAt : -1});
         if(!order){
             return next(new ErrorHandler('Failed to retrieve latest order mate!',400));

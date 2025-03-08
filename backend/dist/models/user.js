@@ -76,6 +76,14 @@ const userSchema = new mongoose_1.Schema({
     courses: [
         {
             courseId: String,
+            courseName: String,
+            coursePostedBy: String,
+            coursePrice: Number,
+            courseEstimatedPrice: Number,
+            courseTags: [String],
+            courseThumbnail: String,
+            courseLevel: String,
+            courseDemoUrl: String
         }
     ],
     postedCourse: [

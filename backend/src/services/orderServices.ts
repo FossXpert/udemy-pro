@@ -6,7 +6,12 @@ import courseModel from "../models/course";
 
 export const newOrder = async (data: any,res: Response) => {
     try {
-        const order = await orderModel.create(data);
+        const order = await orderModel.create(
+            {
+                userId : data.userId,
+                courseId : data.courseId,
+            }
+        );
         return res.status(200).json({
             success: true,
             message: `You have successfully bought the course`,

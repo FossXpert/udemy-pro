@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateVideoUrl = exports.deleteCourseById = exports.getAllCourse = exports.reviewReply = exports.addReview = exports.addAnswer = exports.addQuestion = exports.getCourseByUser = exports.getAllCourses = exports.getSingleCourse = exports.editCourse = exports.uploadCourse = void 0;
+exports.generateVideoUrl = exports.reviewReply = exports.addReview = exports.addAnswer = exports.addQuestion = exports.getCourseByUser = exports.deleteCourseById = exports.getAllCourses = exports.getAllCourse = exports.getSingleCourse = exports.editCourse = exports.uploadCourse = void 0;
 const catchAsyncError_1 = require("../middlewares/catchAsyncError");
 const errorHandlers_1 = __importDefault(require("../utills/errorHandlers"));
 const cloudinary_1 = __importDefault(require("cloudinary"));
@@ -84,14 +84,14 @@ exports.getSingleCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res
             });
         }
         else {
-            const courseMongo = await course_1.default.findById(req.params.id);
-            if (!courseMongo) {
+            const course = await course_1.default.findById(req.params.id);
+            if (!course) {
                 return next(new errorHandlers_1.default('Failed to fetch single course', 400));
             }
-            // await redis?.set(req.params.id, JSON.stringify(courseMongo));
+            await redis_1.default?.set(req.params.id, JSON.stringify(course));
             return res.status(201).json({
                 success: true,
-                courseMongo
+                course
             });
         }
     }
@@ -99,31 +99,51 @@ exports.getSingleCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res
         return next(new errorHandlers_1.default(error.message, 400));
     }
 });
-exports.getAllCourses = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
+//Get all Courses
+exports.getAllCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     try {
-        // const courses = await redis?.get('courses');
-        // if (courses) {
-        //     return res.status(201).json({
-        //         success: true,
-        //         Allcourses: JSON.parse(courses)
-        //     })
-        // }
-        // else {
-        const coursesMongo = await course_1.default.find();
-        if (!coursesMongo) {
-            return next(new errorHandlers_1.default('Failed to fetch all course', 400));
-        }
-        // await redis?.set('courses', JSON.stringify(coursesMongo));
-        return res.status(201).json({
-            success: true,
-            Allcourses: coursesMongo
-        });
-        // }
+        (0, courseServices_1.getAllCoursesService)(res, next);
     }
     catch (error) {
         return next(new errorHandlers_1.default(error.message, 400));
     }
 });
+exports.getAllCourses = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
+    try {
+        const coursesMongo = await course_1.default.find();
+        if (!coursesMongo) {
+            return next(new errorHandlers_1.default('Failed to fetch all course', 400));
+        }
+        return res.status(201).json({
+            success: true,
+            Allcourses: coursesMongo
+        });
+    }
+    catch (error) {
+        return next(new errorHandlers_1.default(error.message, 400));
+    }
+});
+//Delete Course - admin only
+exports.deleteCourseById = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
+    try {
+        const { courseId } = req.params;
+        console.log(courseId);
+        const course = await course_1.default.findById(courseId);
+        if (!course) {
+            return next(new errorHandlers_1.default('Course not found', 400));
+        }
+        await course.deleteOne({ courseId });
+        await redis_1.default?.del(courseId);
+        return res.status(200).json({
+            success: true,
+            message: "Course deleted SuccessFully"
+        });
+    }
+    catch (error) {
+        return next(new errorHandlers_1.default(error.message, 400));
+    }
+});
+//wasted
 exports.getCourseByUser = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     try {
         const userCourses = req.user.courses;
@@ -317,37 +337,6 @@ exports.reviewReply = (0, catchAsyncError_1.catchAsyncError)(async (req, res, ne
         res.status(200).json({
             success: true,
             course
-        });
-    }
-    catch (error) {
-        return next(new errorHandlers_1.default(error.message, 400));
-    }
-});
-//Get all Courses
-exports.getAllCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
-    try {
-        (0, courseServices_1.getAllCoursesService)(res, next);
-    }
-    catch (error) {
-        return next(new errorHandlers_1.default(error.message, 400));
-    }
-});
-//Delete Course - admin only
-exports.deleteCourseById = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
-    try {
-        //courseId === _id here
-        const { courseId } = req.params;
-        console.log(courseId);
-        const course = await course_1.default.findById(courseId);
-        if (!course) {
-            return next(new errorHandlers_1.default('Course not found', 400));
-        }
-        await course.deleteOne({ courseId });
-        const coursesMongo = await course_1.default.find({}).select("-courseData.videoUrl -courseData.links -courseData.questions -courseData.suggestion -courseData.videoLength -courseData.videoPlayer ");
-        await redis_1.default?.set('courses', JSON.stringify(coursesMongo));
-        return res.status(200).json({
-            success: true,
-            message: "Course deleted SuccessFully"
         });
     }
     catch (error) {

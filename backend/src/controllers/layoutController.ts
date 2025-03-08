@@ -6,10 +6,63 @@ import ErrorHandler from "../utills/errorHandlers";
 import categoryModel, { ICategory, iCategory } from "../models/category";
 import { Types } from "mongoose";
 
+export const createCategory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const category = await categoryModel.findOne();
+        const categoryName: string = req.body.categoryName;
+        console.log(category,categoryName);
+        if (!category) {
+            return next(new ErrorHandler(`Failed to create category : ${categoryName}`, 400));
+        }
+        const isCategoryExist : any = category.categories.find((a:iCategory) => a.categoryName === categoryName);
+        console.log(isCategoryExist);
+        if(isCategoryExist){
+            return next(new ErrorHandler("Category already Exist",400));
+        }
+        if(isCategoryExist === undefined || isCategoryExist === null){
+            const newCategory: any = {
+                categoryName : categoryName,
+                containedCourses : [],
+            }
+            category.categories.push(newCategory);
+        }
+        await category.save();
+        return res.status(201).json({
+            success: true,
+            category
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+})
+export const editCategory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
 
+        const categoryDetails: ICategory = req.body;
+        const cat = await categoryModel.findOne({});
+        await categoryModel.findByIdAndUpdate(cat?._id,categoryDetails);
+        await cat?.save();
+        return res.status(201).json({
+            success: true,
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+})
+export const getAllCategory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const allCategory = await categoryModel.findOne();
+        return res.status(201).json({
+            success: true,
+            allCategory
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+})
+
+// wasted
 //Cretae layouut
-
-
 export const createLayout = catchAsyncError(async (req: Request,
     res: Response, next: NextFunction) => {
     try {
@@ -113,62 +166,6 @@ export const editLayout = catchAsyncError(async (req: Request, res: Response, ne
         return next(new ErrorHandler(error.message, 400));
     }
 })
-export const createCategory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const category = await categoryModel.findOne();
-        const categoryName: string = req.body.categoryName;
-        console.log(category,categoryName);
-        if (!category) {
-            return next(new ErrorHandler(`Failed to create category : ${categoryName}`, 400));
-        }
-        const isCategoryExist : any = category.categories.find((a:iCategory) => a.categoryName === categoryName);
-        console.log(isCategoryExist);
-        if(isCategoryExist){
-            return next(new ErrorHandler("Category already Exist",400));
-        }
-        if(isCategoryExist === undefined || isCategoryExist === null){
-            const newCategory: any = {
-                categoryName : categoryName,
-                containedCourses : [],
-            }
-            category.categories.push(newCategory);
-        }
-        await category.save();
-        return res.status(201).json({
-            success: true,
-            category
-        })
-    } catch (error: any) {
-        return next(new ErrorHandler(error.message, 400));
-    }
-})
-export const editCategory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    try {
-
-        const categoryDetails: ICategory = req.body;
-        const cat = await categoryModel.findOne({});
-        await categoryModel.findByIdAndUpdate(cat?._id,categoryDetails);
-        await cat?.save();
-        return res.status(201).json({
-            success: true,
-        })
-    } catch (error: any) {
-        return next(new ErrorHandler(error.message, 400));
-    }
-})
-export const getAllCategory = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const allCategory = await categoryModel.findOne();
-        return res.status(201).json({
-            success: true,
-            allCategory
-        })
-    } catch (error: any) {
-        return next(new ErrorHandler(error.message, 400));
-    }
-})
-
-
 //getLayout by type
 
 export const getLayoutByType = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {

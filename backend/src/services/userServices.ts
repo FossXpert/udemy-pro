@@ -9,13 +9,13 @@ import { userModel } from "../models/user";
 
 export const getUserById = async(id: string,res:Response,next: NextFunction) => {
     try {
-        const user = await redis?.get(id);
+        const user = await userModel.findById(id);
         if(!user){
             return next(new ErrorHandler('Failed to retrieve user by ID',400)); 
         }
-        const JsonUser = JSON.parse(user);
         return res.status(200).json({
-            success : await success(res.statusCode),user:JsonUser,
+            success : await success(res.statusCode),
+            user: user
         })
 
     } catch (error:any) {

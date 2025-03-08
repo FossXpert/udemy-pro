@@ -3,12 +3,69 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLayoutByType = exports.getAllCategory = exports.editCategory = exports.createCategory = exports.editLayout = exports.createLayout = void 0;
+exports.getLayoutByType = exports.editLayout = exports.createLayout = exports.getAllCategory = exports.editCategory = exports.createCategory = void 0;
 const catchAsyncError_1 = require("../middlewares/catchAsyncError");
 const layout_1 = __importDefault(require("../models/layout"));
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const errorHandlers_1 = __importDefault(require("../utills/errorHandlers"));
 const category_1 = __importDefault(require("../models/category"));
+exports.createCategory = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
+    try {
+        const category = await category_1.default.findOne();
+        const categoryName = req.body.categoryName;
+        console.log(category, categoryName);
+        if (!category) {
+            return next(new errorHandlers_1.default(`Failed to create category : ${categoryName}`, 400));
+        }
+        const isCategoryExist = category.categories.find((a) => a.categoryName === categoryName);
+        console.log(isCategoryExist);
+        if (isCategoryExist) {
+            return next(new errorHandlers_1.default("Category already Exist", 400));
+        }
+        if (isCategoryExist === undefined || isCategoryExist === null) {
+            const newCategory = {
+                categoryName: categoryName,
+                containedCourses: [],
+            };
+            category.categories.push(newCategory);
+        }
+        await category.save();
+        return res.status(201).json({
+            success: true,
+            category
+        });
+    }
+    catch (error) {
+        return next(new errorHandlers_1.default(error.message, 400));
+    }
+});
+exports.editCategory = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
+    try {
+        const categoryDetails = req.body;
+        const cat = await category_1.default.findOne({});
+        await category_1.default.findByIdAndUpdate(cat?._id, categoryDetails);
+        await cat?.save();
+        return res.status(201).json({
+            success: true,
+        });
+    }
+    catch (error) {
+        return next(new errorHandlers_1.default(error.message, 400));
+    }
+});
+exports.getAllCategory = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
+    try {
+        const allCategory = await category_1.default.findOne();
+        return res.status(201).json({
+            success: true,
+            allCategory
+        });
+    }
+    catch (error) {
+        return next(new errorHandlers_1.default(error.message, 400));
+    }
+});
+// wasted
 //Cretae layouut
 exports.createLayout = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     try {
@@ -101,62 +158,6 @@ exports.editLayout = (0, catchAsyncError_1.catchAsyncError)(async (req, res, nex
                 message: "faq updated Successfully"
             });
         }
-    }
-    catch (error) {
-        return next(new errorHandlers_1.default(error.message, 400));
-    }
-});
-exports.createCategory = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
-    try {
-        const category = await category_1.default.findOne();
-        const categoryName = req.body.categoryName;
-        console.log(category, categoryName);
-        if (!category) {
-            return next(new errorHandlers_1.default(`Failed to create category : ${categoryName}`, 400));
-        }
-        const isCategoryExist = category.categories.find((a) => a.categoryName === categoryName);
-        console.log(isCategoryExist);
-        if (isCategoryExist) {
-            return next(new errorHandlers_1.default("Category already Exist", 400));
-        }
-        if (isCategoryExist === undefined || isCategoryExist === null) {
-            const newCategory = {
-                categoryName: categoryName,
-                containedCourses: [],
-            };
-            category.categories.push(newCategory);
-        }
-        await category.save();
-        return res.status(201).json({
-            success: true,
-            category
-        });
-    }
-    catch (error) {
-        return next(new errorHandlers_1.default(error.message, 400));
-    }
-});
-exports.editCategory = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
-    try {
-        const categoryDetails = req.body;
-        const cat = await category_1.default.findOne({});
-        await category_1.default.findByIdAndUpdate(cat?._id, categoryDetails);
-        await cat?.save();
-        return res.status(201).json({
-            success: true,
-        });
-    }
-    catch (error) {
-        return next(new errorHandlers_1.default(error.message, 400));
-    }
-});
-exports.getAllCategory = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
-    try {
-        const allCategory = await category_1.default.findOne();
-        return res.status(201).json({
-            success: true,
-            allCategory
-        });
     }
     catch (error) {
         return next(new errorHandlers_1.default(error.message, 400));

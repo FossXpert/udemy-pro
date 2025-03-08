@@ -50,7 +50,7 @@ export const sendToken = async(user : iUser,statusCode : number,res:Response) =>
     console.log("Refresh Token:", refreshToken);
 
     //upload session to redis
-    redis?.set(user._id,JSON.stringify(user) as any);
+    // redis?.set(user._id,JSON.stringify(user) as any);
 
     if(process.env.NODE_ENV=='production'){
         accessTokenOptions.secure = true;

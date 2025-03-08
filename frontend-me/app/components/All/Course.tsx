@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import CourseCard from './CourseCard'
 import Header2 from '../Header2'
-import { useGetallcourseQuery } from '../../../redux/features/courses/courseApi'
+import { useGetallcourseQuery, useGetallcoursesQuery } from '../../../redux/features/courses/courseApi'
 import toast from 'react-hot-toast'
 import {CardLoader} from '../../../app/util/CardLoader'
 
@@ -13,7 +13,7 @@ const Course = () => {
   const [open,setOpen] = useState(false);
   const [route, setRoute] = useState('signin');
 
-  const {data,error,isLoading,refetch} = useGetallcourseQuery({},{refetchOnMountOrArgChange:true});
+  const {data,error,isLoading,refetch} = useGetallcoursesQuery({},{refetchOnMountOrArgChange:true});
   
 
   useEffect(()=>{
@@ -43,6 +43,7 @@ const Course = () => {
             {data?.Allcourses.length > 0 ? (
               data.Allcourses.map((value: any, index: number) => (
                   <CourseCard
+                    cartDisable={false}
                     key={index}
                     id={value._id}
                     name={value.name}

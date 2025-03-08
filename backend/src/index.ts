@@ -1,5 +1,6 @@
 require('dotenv').config();
 import { app } from "./app";
+import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import connectDB from "./utills/db";
@@ -11,37 +12,37 @@ import orderRouter from "./routes/orderRoutes";
 import notificationRouter from "./routes/notificationRouter";
 import analyticsRouter from "./routes/analyticsRouter";
 import layoutRouter from "./routes/layoutRouter";
+import { hostname } from "os";
+import { Console } from "console";
 import cartRouter from "./routes/cartRouter";
 import mongoose from "mongoose";
 
-// Basic middleware
+app.use(cors({
+    origin: [
+        "http://localhost:3000",
+        "https://udemy-pro.vercel.app",
+        "http://100.93.3.137:3000/",
+        "https://udemy-pro-backend.fossxpert.site",
+        "https://udemy-pro-backend.vercel.app",
+        "https://udemy-pro-backend-rahul-rays-projects.vercel.app",
+        "https://udemy-pro-backend-fossxpert-rahul-rays-projects.vercel.app",
+        "https://udemy-pro-rahul-rays-projects.vercel.app",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  // Add OPTIONS for preflight
+    allowedHeaders: [
+        "Content-Type", 
+        "Authorization", 
+        "X-Requested-With", 
+        "Accept", 
+        "Origin"
+    ],
+    exposedHeaders: ["Set-Cookie"],
+    preflightContinue: true,
+}));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
-
-// Allow specific origins with credentials
-app.use((req, res, next) => {
-    const allowedOrigins = [
-        'http://localhost:3000',
-        'https://udemy-pro.vercel.app',
-        'https://udemy-pro-backend.vercel.app'
-    ];
-    
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin);
-    }
-    
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-    
-    // Handle preflight
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-    
-    next();
-});
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

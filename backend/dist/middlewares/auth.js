@@ -8,7 +8,7 @@ require('dotenv').config();
 const catchAsyncError_1 = require("./catchAsyncError");
 const errorHandlers_1 = __importDefault(require("../utills/errorHandlers"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const redis_1 = __importDefault(require("../utills/redis"));
+const user_1 = require("../models/user");
 exports.isAuthenticated = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     const access_token = req.cookies.access_token;
     if (!access_token) {
@@ -18,11 +18,11 @@ exports.isAuthenticated = (0, catchAsyncError_1.catchAsyncError)(async (req, res
     if (!decoded) {
         return next(new errorHandlers_1.default('access token is not valid', 400));
     }
-    const user = await redis_1.default?.get(decoded.id);
+    const user = await user_1.userModel.findById(decoded.id);
     if (!user) {
         return next(new errorHandlers_1.default("user not found", 400));
     }
-    req.user = JSON.parse(user); // Remember it to how to use custom
+    req.user = user; // Remember it to how to use custom type
     next();
 });
 const validateUserRole = (...roles) => {
