@@ -42,7 +42,7 @@ app_1.app.use((0, cors_1.default)({
     exposedHeaders: ["Set-Cookie"],
     preflightContinue: true,
 }));
-app_1.app.use(express_1.default.json({ limit: '50mb' }));
+app_1.app.use(express_1.default.json());
 app_1.app.use((0, cookie_parser_1.default)());
 cloudinary_1.default.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
