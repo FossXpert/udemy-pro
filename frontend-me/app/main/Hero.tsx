@@ -47,7 +47,7 @@ const Hero = (props: Props) => {
       </div>
       <div className='text-center text-gray-500 text-md'>Please refresh this website whenever error occurs or website is not responding,it results in jsonwebtoken refresh </div>
       <div className='text-center text-gray-500 text-sm'>Every website has some issues, this website is not an exception, we are working on it </div>
-      <div className='text-center text-gray-800 text-sm mt-6'>In case if on vercel, if you are getting CORS error, please clone this repository,navigate inside fontend-me folder, install dependencies and run it locally, that's it, then it will run smoothly</div>
+      <div className='text-center text-gray-800 text-sm mt-6'>In case if on vercel, if you are getting CORS error, please clone this repository,navigate inside fontend-me folder, install dependencies and run it locally, that&apos;s it, then it will run smoothly</div>
 
 
     </>
