@@ -137,11 +137,11 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
                 }
             </div>
           </div>
-          {
+          {/* {
             <div className='icon-ham'>
               <MdOutlineMenuOpen className="icon-ham-icon" />
             </div>
-          }
+          } */}
         </div>
       </div>
       <div>
