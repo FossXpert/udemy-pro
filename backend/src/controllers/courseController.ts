@@ -15,6 +15,7 @@ import { count } from "console";
 import notificationModel from "../models/notification";
 import axios from 'axios'
 
+//1
 export const uploadCourse = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body;
@@ -34,7 +35,7 @@ export const uploadCourse = catchAsyncError(async (req: Request, res: Response, 
         return next(new ErrorHandler(error.message, 400));
     }
 })
-
+//2
 export const editCourse = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const courseId = req.params.id;
@@ -67,6 +68,8 @@ export const editCourse = catchAsyncError(async (req: Request, res: Response, ne
         if (!course) {
             return next(new ErrorHandler('Failed to update course', 400))
         }
+            const allCourses = await courseModel.find();
+            await redis?.set('courses', JSON.stringify(allCourses));
         res.status(201).json({
             success: true,
             course
@@ -111,7 +114,7 @@ export const getAllCourses = catchAsyncError(async (req: Request, res: Response,
             })
         }
         else {
-            const coursesMongo = await courseModel.find({}).select("-courseData.videoUrl -courseData.links -courseData.questions -courseData.suggestion -courseData.videoLength -courseData.videoPlayer ");
+            const coursesMongo = await courseModel.find();
             if (!coursesMongo) {
                 return next(new ErrorHandler('Failed to fetch all course', 400));
             }

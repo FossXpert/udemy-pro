@@ -14,6 +14,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const sendMail_1 = __importDefault(require("../utills/sendMail"));
 const notification_1 = __importDefault(require("../models/notification"));
 const axios_1 = __importDefault(require("axios"));
+//1
 exports.uploadCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     try {
         const data = req.body;
@@ -33,6 +34,7 @@ exports.uploadCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, n
         return next(new errorHandlers_1.default(error.message, 400));
     }
 });
+//2
 exports.editCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     try {
         const courseId = req.params.id;
@@ -61,6 +63,8 @@ exports.editCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, nex
         if (!course) {
             return next(new errorHandlers_1.default('Failed to update course', 400));
         }
+        const allCourses = await course_1.default.find();
+        await redis_1.default?.set('courses', JSON.stringify(allCourses));
         res.status(201).json({
             success: true,
             course
@@ -105,7 +109,7 @@ exports.getAllCourses = (0, catchAsyncError_1.catchAsyncError)(async (req, res, 
             });
         }
         else {
-            const coursesMongo = await course_1.default.find({}).select("-courseData.videoUrl -courseData.links -courseData.questions -courseData.suggestion -courseData.videoLength -courseData.videoPlayer ");
+            const coursesMongo = await course_1.default.find();
             if (!coursesMongo) {
                 return next(new errorHandlers_1.default('Failed to fetch all course', 400));
             }

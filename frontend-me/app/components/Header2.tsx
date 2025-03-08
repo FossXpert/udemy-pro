@@ -106,10 +106,19 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
                     <div className="loader">
                       <Image width={45} height={45} src='/loaders/login-loader.gif' alt="" />
                     </div>
-                  ) : isSuccess && data?.user?.avatar ? ( // Ensure data exists and is successful
-                    <Link href={'/profile'}>
-                      <Image className={`rounded-full`} width={35} height={28} src={data.user.avatar.url} alt="Profile" />
-                    </Link>
+                  ) : isSuccess && data?.user ? ( // Ensure data exists and is successful
+                    <div 
+                      className="cursor-pointer"
+                      onClick={() => router.push('/profile')}
+                    >
+                      <Image 
+                        className="rounded-full" 
+                        width={23} 
+                        height={23} 
+                        src={data?.user?.avatar?.url || 'https://img.icons8.com/fluency-systems-filled/48/view-as-different-user.png'} 
+                        alt="Profile" 
+                      />
+                    </div>
                   ) : (
                     <MdOutlineLogin onClick={() => handleIologin()} />
                   )

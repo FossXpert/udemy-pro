@@ -11,7 +11,7 @@ import redis from '../utills/redis';
 export const createCourse = async(data:iCourse,req:Request,res:Response,next:NextFunction)=>{
     try {
         const course = await courseModel.create(data);
-        const categoryName : string = "Technology";
+        const categoryName : string = "ML";
         const cat = await categoryModel.findOne({'categories.categoryName':categoryName});
         const user = (req as jwtPayloadNew).user;
         const userId = user._id;
@@ -36,9 +36,8 @@ export const createCourse = async(data:iCourse,req:Request,res:Response,next:Nex
             return next(new ErrorHandler('Cat Is Undefined',400));
         }
         await course.save();
-
-        const coursesMongo = await courseModel.find({}).select("-courseData.videoUrl -courseData.links -courseData.questions -courseData.suggestion -courseData.videoLength -courseData.videoPlayer ");
-        await redis?.set('courses', JSON.stringify(coursesMongo));
+        const createdCourse = await courseModel.findById(course._id);
+        await redis?.set(createdCourse?._id.toString(), JSON.stringify(createdCourse));
          res.status(201).json({
             success: await success(res.statusCode),
             course

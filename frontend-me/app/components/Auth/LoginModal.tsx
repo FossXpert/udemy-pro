@@ -28,7 +28,7 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
 
   const [login, { data ,isSuccess : loginSuccess,error:loginError}] = useLoginMutation();
   const [signup, { isLoading, data: signupData, error,isSuccess }] = useSignupMutation();
-  const [verification,{isSuccess : verifySuccess, data : verifyData, error: verifyError}] = useVerificationMutation();
+  const [verification,{isLoading : verifyLoading,isSuccess : verifySuccess, data : verifyData, error: verifyError}] = useVerificationMutation();
   const token = useSelector((state:any) => state.auth.token);
   const [num,setNum]=useState(true);
   const {data:userData,isSuccess:userSuccess,error:userError} = useLoadUserQuery({});
@@ -395,7 +395,7 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
                     </div>
                     <div className="button">
                       <button type="submit" className="submit">
-                        Confirm
+                        {verifyLoading ? "Loading..." : "Confirm"}
                       </button>
                       <button
                         type="button"

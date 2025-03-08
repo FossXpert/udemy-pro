@@ -13,7 +13,7 @@ const redis_1 = __importDefault(require("../utills/redis"));
 const createCourse = async (data, req, res, next) => {
     try {
         const course = await course_1.default.create(data);
-        const categoryName = "Technology";
+        const categoryName = "ML";
         const cat = await category_1.default.findOne({ 'categories.categoryName': categoryName });
         const user = req.user;
         const userId = user._id;
@@ -39,8 +39,8 @@ const createCourse = async (data, req, res, next) => {
             return next(new errorHandlers_1.default('Cat Is Undefined', 400));
         }
         await course.save();
-        const coursesMongo = await course_1.default.find({}).select("-courseData.videoUrl -courseData.links -courseData.questions -courseData.suggestion -courseData.videoLength -courseData.videoPlayer ");
-        await redis_1.default?.set('courses', JSON.stringify(coursesMongo));
+        const createdCourse = await course_1.default.findById(course._id);
+        await redis_1.default?.set(createdCourse?._id.toString(), JSON.stringify(createdCourse));
         res.status(201).json({
             success: await (0, catchAsyncError_1.success)(res.statusCode),
             course
