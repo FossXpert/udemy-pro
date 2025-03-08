@@ -22,6 +22,7 @@ html, body {
 .button-global{
     background-color: #7F56D9;
     color: #FFF;
+    min-width: 100px;
     width: max-content;
     height: 40px;
     font-weight: 500;
