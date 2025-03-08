@@ -6,6 +6,7 @@ import { MdOutlineFormatListNumbered } from 'react-icons/md';
 import Link from 'next/link';
 import { useAddToCartMutation, useGetCartStatusQuery } from '../../../redux/features/cart/cartApi';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -27,12 +28,14 @@ type Props = {
     demoUrl : string;
     totalVideos : string;
     cartDisable : boolean;
+    path : string;
 }
 const border = '';
-const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos,cartDisable}) => {
+const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos,cartDisable,path}) => {
   
   const [addToCart,{isSuccess,isLoading,error}] = useAddToCartMutation();
   const {refetch} = useGetCartStatusQuery({},{refetchOnMountOrArgChange:true});
+  const router = useRouter();
 
   useEffect(()=>{
     if(isSuccess){
@@ -68,9 +71,12 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
     <>
         <div onClick={handleOnClick} className={`flex flex-col bg-[rgb(249,250,251)] w-[250px] h-[310px] p-2 ${border} border-[1px] border-solid border-gray-300 rounded-sm shadow-md shadow-grey-700`}>
             <div className={`flex flex-col w-full h-[185px] ${border}`}>
-            <Link href={`courses/${id}`} className='no-underline text-black'>
+            <div 
+              onClick={() => router.push(`${path}/${id}`)} 
+              className='no-underline text-black cursor-pointer'
+            >
               <Image src={thumbnail?.url || ''} alt='text' width={250} height={185} loading='lazy' />
-            </Link>
+            </div>
             </div>
             <div className={`flex flex-col w-full h-[125px] ${border} !border-red-500`}>
               <div className={`flex w-full h-[45px] overflow-hidden ${border}`}>
@@ -106,7 +112,7 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
                   )}
                 </div>
                 <div className='flex'>
-                  <button disabled={cartDisable} className='button-global !h-[1.5rem]' onClick={()=>handleAddToCart()}>{isLoading ? "Adding..." : "Add to Cart"}</button>
+                  {cartDisable ?"Enrolled": <button className='button-global !h-[1.5rem]' onClick={()=>handleAddToCart()}>{isLoading ? "Adding..." : "Add to Cart"}</button>}
                 </div>
               </div>
             </div>

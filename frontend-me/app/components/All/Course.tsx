@@ -55,6 +55,7 @@ const Course = () => {
                     level={value.level}
                     demoUrl={value.demoUrl}
                     totalVideos={value.totalVideos}
+                    path={`courses`}
                   />
               ))
             ) : (

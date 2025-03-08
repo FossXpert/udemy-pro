@@ -1,7 +1,7 @@
-import { CardLoader } from '@/app/util/CardLoader'
+import { CardLoader } from '../../../app/util/CardLoader'
 import React, { useEffect } from 'react'
 import CourseCard from '../All/CourseCard'
-import { useLoadUserQuery } from '@/redux/features/api/apiSlice'
+import { useLoadUserQuery } from '../../../redux/features/api/apiSlice'
 
 type Props = {}
 
@@ -15,14 +15,14 @@ const EnrolledCourses = (props: Props) => {
   }, [refetch]);
   return (
     <>
-    {isLoading && <CardLoader length={12} />}
+    {isLoading && <CardLoader length={1} />}
         <div className={`flex items-center justify-center gap-6 flex-wrap w-full h-full mt-[8%] sm:mt-[1%]`}>
             {data?.user?.courses?.length > 0 ? (
               data?.user?.courses?.map((value: any, index: number) => (
                   <CourseCard
-                    cartDisable={false}
+                    cartDisable={true}
                     key={index}
-                    id={value._id}
+                    id={value.courseId}
                     name={value.courseName}
                     postedBy={value.coursePostedBy}
                     price={value.coursePrice}
@@ -32,6 +32,7 @@ const EnrolledCourses = (props: Props) => {
                     level={value.courseLevel}
                     demoUrl={value.courseDemoUrl}
                     totalVideos={value.courseTotalVideos}
+                    path={`all/courses`}
                   />
               ))
             ) : (

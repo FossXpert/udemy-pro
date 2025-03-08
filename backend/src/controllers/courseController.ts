@@ -11,7 +11,6 @@ import { JwtPayload } from "jsonwebtoken";
 import ejs from 'ejs';
 import path from 'path';
 import sendMail from "../utills/sendMail";
-import { count } from "console";
 import notificationModel from "../models/notification";
 import axios from 'axios'
 
@@ -41,10 +40,7 @@ export const editCourse = catchAsyncError(async (req: Request, res: Response, ne
         const courseId = req.params.id;
         const data = req.body;
         const thumbnail = data.thumbnail;
-        const courseData = await courseModel.findById(courseId) as any;
-
-        if (thumbnail && !thumbnail.startsWith("https")) {
-            await cloudinary.v2.uploader.destroy(courseData?.thumbnail.public_id)
+        if (thumbnail) {
             const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
                 folder: 'courses'
             })
@@ -52,15 +48,6 @@ export const editCourse = catchAsyncError(async (req: Request, res: Response, ne
                 public_id: myCloud.public_id,
                 url: myCloud.secure_url
             }
-            console.log("inside 1")
-        }
-
-        if(thumbnail && thumbnail.startsWith("https")){
-            data.thumbnail = {
-                public_id: courseData.thumbnail.public_id,
-                url: courseData.thumbnail.url
-            }
-            console.log("inside 2")
         }
 
         
@@ -131,6 +118,10 @@ export const getAllCourses = catchAsyncError(async (req: Request, res: Response,
 export const deleteCourseById = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
     try {
         const {courseId} = req.params;
+        const courseArray = ["67cc6da0e4d373b55862e146","67cbf4c8f65a669ef3e863c8"];
+        if(courseArray.includes(courseId)){
+            return next(new ErrorHandler("On purpose this course cannot be deleted, try to delete other courses",400));
+        }
         console.log(courseId);
         const course = await courseModel.findById(courseId);
         if(!course){

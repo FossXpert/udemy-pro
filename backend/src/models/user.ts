@@ -12,7 +12,10 @@ interface PurchasedCourse {
     coursePrice?: number;
     courseEstimatedPrice?: number;
     courseTags?: string[];
-    courseThumbnail?: string;
+    courseThumbnail?: {
+        public_id: string;
+        url: string;
+    };
     courseLevel?: string;
     courseDemoUrl?: string;
     _id: string;
@@ -85,7 +88,10 @@ const userSchema = new Schema<iUser>({
             coursePrice: Number,
             courseEstimatedPrice: Number,
             courseTags: [String],
-            courseThumbnail: String,
+            courseThumbnail: {
+                public_id: String,
+                url: String,
+            },
             courseLevel: String,
             courseDemoUrl: String
         }

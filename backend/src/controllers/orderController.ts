@@ -34,7 +34,7 @@ export const createOrder = catchAsyncError(async(req:Request,res:Response,next:N
                 coursePrice : course.price,
                 courseEstimatedPrice : course.estimatedPrice,
                 courseTags : course.tags,
-                courseThumbnail : course.thumbnail as {url: string},
+                courseThumbnail : course.thumbnail,
                 courseLevel : course.level,
                 courseDemoUrl : course.demoUrl,
         }       

@@ -152,11 +152,22 @@ const CourseInformation:FC<Props> = ({handleSubmit:handleSubmit1,active,setActiv
             />
             </div>
           </div>
-          <div draggable={true} onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave} className='group-5'>
+          {/* <div draggable={true} onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave} className='group-5'>
           <input className='' name='file' type='file' accept='image/*' id=''/>
           <label className={`${dragged ? "bg-blue-500" : "bg-transparent"}`} htmlFor='file'>
             <span>Drag and drop an image here</span>
           </label>
+          </div> */}
+          <div className='group-3-1'>
+            <label htmlFor=''>Thumbnail</label>
+            <input
+              className='input-box-1'
+              type='text'
+              name='course-thumbnail'
+              placeholder='Enter Thumbnail URL'
+              value={courseInfo.thumbnail}
+              onChange={(e)=>setCourseInfo({...courseInfo,thumbnail:e.target.value})}
+            />
           </div>
           <div className='create-course-buttons'>
             <button type='submit' value ='next' className='button-global' onClick={()=>setActive(2)}>Next</button>

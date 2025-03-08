@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import { useAddToCartMutation, useGetCartStatusQuery, useRemoveFromCartMutation } from '../../../redux/features/cart/cartApi'
 import { useCreateOrderMutation } from '../../../redux/features/order/order'
+import { useRouter, usePathname } from "next/navigation";
 
 type Props = {
     productId : string;
@@ -18,11 +19,12 @@ const heheblack = '';
 const Cart = () => {
   const [open,setOpen] = useState(false);
   const [route, setRoute] = useState('signin');
+  const router = useRouter();
 
   const {data,isLoading,isSuccess,error,refetch} = useGetCartStatusQuery({},{refetchOnMountOrArgChange:true});
   const {data:courseData,isSuccess:courseSuccess,error:courseError,refetch:refetchCourse} = useGetallcourseQuery({},{refetchOnMountOrArgChange:true});
-  const [removeFromCart,{isSuccess:removeSuccess,error:removeError}] = useRemoveFromCartMutation();
-  const [createOrder,{isSuccess:createSuccess,error:createError}] = useCreateOrderMutation();
+  const [removeFromCart,{isSuccess:removeSuccess,error:removeError,isLoading:removeLoading}] = useRemoveFromCartMutation();
+  const [createOrder,{isSuccess:createSuccess,error:createError,isLoading:createLoading}] = useCreateOrderMutation();
 
   useEffect(()=>{
     if(isSuccess){
@@ -106,7 +108,7 @@ const Cart = () => {
                   alt='text' width={125} height={90} />
                 <div className='flex flex-col w-[40%] h-auto rounded-sm p-2 '>
                     <h4 className='m-0 p-0 text-[1.1rem] font-semibold'>{course?.name}</h4>
-                    <button className='mt-6 w-[65px]' onClick={()=>handleRemoveItem(value.product)}>Remove</button>
+                      <button className='mt-6 w-[22%] bg-black border-none text-white px-4 py-2 rounded-md' onClick={()=>handleRemoveItem(value.product)}> {removeLoading ? "Removing..." : "Remove"}</button>
                 </div>
                 <div className='flex flex-col justify-center items-center border border-solid  border-gray-300 w-[10%] h-auto rounded-sm p-2 '>
                     <p>{value.price}</p>
@@ -118,7 +120,7 @@ const Cart = () => {
                     <p>{value.totalPrice}</p>
                 </div>
                 <div className='flex flex-col justify-center items-center w-[20%] h-auto rounded-sm p-2 '>
-                    <button onClick={()=>handleBuyNow(value.product)}>Buy Now</button>
+                  <button className='bg-violet-500 border-none text-white px-4 py-2 rounded-md' onClick={()=>handleBuyNow(value.product)}> {createLoading ? "Loading..." : "Buy Now"}</button>
                 </div>
               </div>
               )
@@ -135,13 +137,12 @@ const Cart = () => {
                 </div>
                 <div className={`flex justify-end items-center h-[60px] w-auto ${heheblack}`}>
                     <div className={`flex justify-around items-center h-[60px] w-[30%] ${hehegreen}`}>
-                        <button className='flex gap-2'>
+                        <button onClick={()=>router.push("/")} className='flex gap-2 bg-black border-none text-white px-4 py-2 rounded-md'>
                           <FaArrowLeftLong/>
                           Continue Shopping
                         </button>
                     </div>
                     <div className={`flex justify-around items-center h-[60px] w-[30%] ${hehegreen}`}>
-                        <button>Checkout</button>
                     </div>
                 </div>
             </div>
@@ -152,7 +153,7 @@ const Cart = () => {
               <div className={`flex w-[90%] justify-center mt-2 h-auto ${hehegreen}`}>
                 <h4>Your Cart is Empty</h4>
                     <div className={`flex justify-around items-center h-[60px] w-[30%] ${hehegreen}`}>
-                        <button className='flex gap-2'>
+                    <button onClick={()=>router.push("/")} className='flex gap-2 bg-black border-none text-white px-4 py-2 rounded-md'>
                           <FaArrowLeftLong/>
                           Continue Shopping
                         </button>

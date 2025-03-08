@@ -81,7 +81,10 @@ const userSchema = new mongoose_1.Schema({
             coursePrice: Number,
             courseEstimatedPrice: Number,
             courseTags: [String],
-            courseThumbnail: String,
+            courseThumbnail: {
+                public_id: String,
+                url: String,
+            },
             courseLevel: String,
             courseDemoUrl: String
         }

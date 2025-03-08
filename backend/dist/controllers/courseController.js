@@ -40,9 +40,7 @@ exports.editCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, nex
         const courseId = req.params.id;
         const data = req.body;
         const thumbnail = data.thumbnail;
-        const courseData = await course_1.default.findById(courseId);
-        if (thumbnail && !thumbnail.startsWith("https")) {
-            await cloudinary_1.default.v2.uploader.destroy(courseData?.thumbnail.public_id);
+        if (thumbnail) {
             const myCloud = await cloudinary_1.default.v2.uploader.upload(thumbnail, {
                 folder: 'courses'
             });
@@ -50,14 +48,6 @@ exports.editCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, nex
                 public_id: myCloud.public_id,
                 url: myCloud.secure_url
             };
-            console.log("inside 1");
-        }
-        if (thumbnail && thumbnail.startsWith("https")) {
-            data.thumbnail = {
-                public_id: courseData.thumbnail.public_id,
-                url: courseData.thumbnail.url
-            };
-            console.log("inside 2");
         }
         const course = await course_1.default.findByIdAndUpdate(courseId, { $set: data }, { new: true });
         if (!course) {
@@ -127,6 +117,10 @@ exports.getAllCourses = (0, catchAsyncError_1.catchAsyncError)(async (req, res, 
 exports.deleteCourseById = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     try {
         const { courseId } = req.params;
+        const courseArray = ["67cc6da0e4d373b55862e146", "67cbf4c8f65a669ef3e863c8"];
+        if (courseArray.includes(courseId)) {
+            return next(new errorHandlers_1.default("On purpose this course cannot be deleted, try to delete other courses", 400));
+        }
         console.log(courseId);
         const course = await course_1.default.findById(courseId);
         if (!course) {
