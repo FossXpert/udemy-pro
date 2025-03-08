@@ -137,7 +137,7 @@ const Cart = () => {
                 </div>
                 <div className={`flex justify-end items-center h-[60px] w-auto ${heheblack}`}>
                     <div className={`flex justify-around items-center h-[60px] w-[30%] ${hehegreen}`}>
-                        <button onClick={()=>router.push("/")} className='button-global'>
+                        <button onClick={()=>router.push("/")} className='flex gap-2 bg-black border-none text-white px-4 py-2 rounded-md'>
                           <FaArrowLeftLong/>
                           Continue Shopping
                         </button>
