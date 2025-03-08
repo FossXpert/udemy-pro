@@ -51,12 +51,6 @@ const MyAccount = (props: Props) => {
     const imageHandle = async(e:any) => {
         const file = e.target.files[0];
         if (!file) return;
-
-        if (file.size > 1024 * 1024 * 2) { // 2MB limit
-            toast.error("Image size should be less than 2MB");
-            return;
-        }
-
         const fileReader = new FileReader();
         fileReader.onload = async() => {
             if(fileReader.readyState === 2){
