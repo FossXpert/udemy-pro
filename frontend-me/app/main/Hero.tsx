@@ -3,10 +3,11 @@ import caraousel from './carousel.json'
 import Image from 'next/image'
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md'
 import { GoDotFill } from 'react-icons/go'
+import { useRouter } from 'next/navigation'
 type Props = {}
 
 const Hero = (props: Props) => {
-
+  const router = useRouter();
   const [current, setCurrent] = useState<any>(0);
   const images = caraousel.carousel.filter((item) => item.active === true)
 
@@ -49,7 +50,11 @@ const Hero = (props: Props) => {
       <div className='text-center text-gray-500 text-sm'>Every website has some issues, this website is not an exception, we are working on it </div>
       {/* <div className='text-center text-gray-800 text-sm mt-6'>In case if on vercel, if you are getting CORS error, please clone this repository,navigate inside fontend-me folder, install dependencies and run it locally, that&apos;s it, then it will run smoothly</div> */}
       {/* <div className='text-center text-gray-800 text-sm mt-6'>No need to run backend, just run frontend-me on port 3000</div> */}
-      
+      <div className='text-center text-gray-800 text-sm mt-6'>
+        <button onClick={()=>router.push('/all/courses')} className='button-global'>
+          View All Courses
+        </button>
+      </div>
     </>
   )
 }

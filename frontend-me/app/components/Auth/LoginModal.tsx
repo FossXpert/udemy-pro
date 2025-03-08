@@ -33,51 +33,68 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
   const [num,setNum]=useState(true);
   const {data:userData,isSuccess:userSuccess,error:userError} = useLoadUserQuery({});
 
-  useEffect(()=>{
+  // Signup effect
+  useEffect(() => {
     if(isSuccess){
-      num ? toast.success("Otp sent on Email"):toast.success("Correct Otp has been sent- on Email");
-      setNum(false);
+        const message = num ? "OTP sent on Email" : "Correct OTP has been sent on Email";
+        toast.success(message, {
+            duration: 2000,
+            id: 'signupSuccess'
+        });
+        setNum(false);
     }
     if(error){
-      if("data" in error){
-        const errorData = error as any;
-        toast.error(errorData.data.message);
-      }
+        if("data" in error){
+            const errorData = error as any;
+            toast.error(errorData.data.message, {
+                duration: 3000,
+                id: 'signupError'
+            });
+        }
     }
+  }, [isSuccess, error, num]);
+
+  // Login effect
+  useEffect(() => {
     if(loginSuccess){
-      toast.success("Logged In");
-      // router.push("/")
-      handleClose();
-      window.location.reload();
+        toast.success("Logged In Successfully", {
+            duration: 2000,
+            id: 'loginSuccess'
+        });
+        handleClose();
+        window.location.reload();
     }
     if(loginError){
-      if("data" in loginError){
-        const errorData = loginError as any;
-        toast.error(errorData.data.message);
-      }
+        if("data" in loginError){
+            const errorData = loginError as any;
+            toast.error(errorData.data.message, {
+                duration: 3000,
+                id: 'loginError'
+            });
+        }
     }
-    // if(userSuccess){
-    //   toast.success("User fetched successfully");
-    // }
-    // if(userError){
-    //   if("data" in userError){
-    //     const errorData = userError as any;
-    //     toast.error(errorData.data.message);
-    //   }
-    // }
+  }, [loginSuccess, loginError]);
+
+  // Verification effect
+  useEffect(() => {
     if(verifySuccess){
-      toast.success("Otp verified,PLease Login");
-      setRoute('signin')
+        toast.success("OTP verified, Please Login", {
+            duration: 2000,
+            id: 'verifySuccess'
+        });
+        setRoute('signin');
     }
     if(verifyError){
-      if("data" in verifyError){
-        const errorData = verifyError as any;
-        toast.error(errorData.data.message);
-      }
+        if("data" in verifyError){
+            const errorData = verifyError as any;
+            toast.error(errorData.data.message, {
+                duration: 3000,
+                id: 'verifyError'
+            });
+        }
     }
-  },[isSuccess,error,verifySuccess,verifyError,loginSuccess,loginError]);
+  }, [verifySuccess, verifyError, setRoute]);
 
-  
   
   
   // Schema validation for signup
@@ -145,9 +162,6 @@ const LoginModal: FC<Props> = ({ open, setOpen, route, setRoute }) => {
         const result = await login(values).unwrap();
         console.log('signin values', values);
         console.log('Login Successfull', result)
-        if (result) {
-          toast.success("Logged In Successfully");
-        }
       } catch (error: any) {
         console.log('Login failed', error)
         throw error;

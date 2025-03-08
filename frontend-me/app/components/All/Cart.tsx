@@ -26,51 +26,76 @@ const Cart = () => {
   const [removeFromCart,{isSuccess:removeSuccess,error:removeError,isLoading:removeLoading}] = useRemoveFromCartMutation();
   const [createOrder,{isSuccess:createSuccess,error:createError,isLoading:createLoading}] = useCreateOrderMutation();
 
-  useEffect(()=>{
-    if(isSuccess){
-        console.log(data);
-        toast.success("Cart Items fetched successfully");
+  useEffect(() => {
+    if (isSuccess) {
+      const toastId = toast.success("Cart Items fetched successfully", {
+        duration: 2000,
+        id: 'cartFetch'
+      });
     }
-    if(courseSuccess){
-      refetch();
-      console.log(courseData);
-      // toast.success("Course Data fetched successfully");
-  }
-    if(error){
-      if('data' in error){
+    if (error) {
+      if ('data' in error) {
         const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
+        toast.error(errorMessage.data.message, {
+          duration: 3000,
+          id: 'cartError'
+        });
       }
     }
-    if(courseError){
-      if('data' in courseError){
+  }, [isSuccess, error]);
+
+  useEffect(() => {
+    if (courseSuccess) {
+      refetch();
+    }
+    if (courseError) {
+      if ('data' in courseError) {
         const errorMessage = courseError as any;
-        toast.error(errorMessage.data.message);
+        toast.error(errorMessage.data.message, {
+          duration: 3000,
+          id: 'courseError'
+        });
       }
     }
+  }, [courseSuccess, courseError, refetch]);
 
-    if(removeSuccess){
+  useEffect(() => {
+    if (removeSuccess) {
       refetch();
-      toast.success("Item removed from cart");
+      toast.success("Item removed from cart", {
+        duration: 2000,
+        id: 'removeSuccess'
+      });
     }
-    if(removeError){
-      if('data' in removeError){
+    if (removeError) {
+      if ('data' in removeError) {
         const errorMessage = removeError as any;
-        toast.error(errorMessage.data.message);
+        toast.error(errorMessage.data.message, {
+          duration: 3000,
+          id: 'removeError'
+        });
       }
     }
-    if(createSuccess){
-      refetch();
-      toast.success("Order created successfully");
-    }
-    if(createError){
-      if('data' in createError){
-        const errorMessage = createError as any;
-        toast.error(errorMessage.data.message);
-      }
-    }
-  },[isSuccess,courseSuccess,removeSuccess,createSuccess]);
+  }, [removeSuccess, removeError, refetch]);
 
+  useEffect(() => {
+    if (createSuccess) {
+      refetch();
+      toast.success("Order created successfully", {
+        duration: 2000,
+        id: 'orderSuccess'
+      });
+    }
+    if (createError) {
+      if ('data' in createError) {
+        const errorMessage = createError as any;
+        toast.error(errorMessage.data.message, {
+          duration: 3000,
+          id: 'orderError'
+        });
+      }
+    }
+  }, [createSuccess, createError, refetch]);
 
   const handleRemoveItem = async(productId:any) => {
     console.log(productId);

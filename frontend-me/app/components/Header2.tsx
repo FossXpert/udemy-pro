@@ -36,16 +36,28 @@ const Header2: FC<Props> = ({ open, setOpen, route, setRoute }) => {
 
   useEffect(() => {
     console.log(sSize, isMobile);
+  }, [sSize, isMobile]);
+
+  useEffect(() => {
     if (isSuccess) {
-      console.log(data);
+      toast.success("Data fetched successfully", {
+        duration: 2000,
+        id: 'headerDataSuccess'
+      });
     }
+  }, [isSuccess]);
+
+  useEffect(() => {
     if (error) {
       if ("data" in error) {
         const errorData = error as any;
-        toast.error(errorData.data.message);
+        toast.error(errorData.data.message, {
+          duration: 3000,
+          id: 'headerError'
+        });
       }
     }
-  }, [isSuccess, error, data, sSize, isMobile]);
+  }, [error]);
 
   const handleProfile = () => {
     setOpenProfile(true);
