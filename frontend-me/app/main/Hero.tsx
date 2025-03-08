@@ -45,6 +45,9 @@ const Hero = (props: Props) => {
         </div>
         <MdArrowRight onClick={() => slideNext()} className={`text-2xl cursor-pointer p-0 m-0`} />
       </div>
+      <div className='text-center text-gray-500 text-md'>Please refresh this website whenever error occurs or website is not responding,it results in jsonwebtoken refresh </div>
+      <div className='text-center text-gray-500 text-sm mt-6'>Every website has some issues, this website is not an exception, we are working on it </div>
+
     </>
   )
 }
