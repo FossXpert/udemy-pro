@@ -37,34 +37,40 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
   const {refetch} = useGetCartStatusQuery({},{refetchOnMountOrArgChange:true});
   const router = useRouter();
 
-  useEffect(()=>{
+  useEffect(() => {
     if(isSuccess){
-      toast.success("Added to cart")
-      refetch();
+        toast.success("Added to cart", {
+            duration: 2000,
+            id: `addToCart-${id}`,
+            position: 'top-center'
+        });
+        refetch();
     }
-    if(error){
-      if('data' in error){
-        const errorData = error as any;
-        toast.error(errorData.message);
-      }
-    }
+  }, [isSuccess, id, refetch]);
 
-  },[isSuccess])
+  useEffect(() => {
+    if(error){
+        if('data' in error){
+            const errorData = error as any;
+            toast.error(errorData.message, {
+                duration: 3000,
+                id: `addToCartError-${id}`,
+                position: 'top-center'
+            });
+        }
+    }
+  }, [error, id]);
 
   const handleOnClick = () => {
     console.log("Clicked");
     console.log("id is : ",id);
   } 
-    const handleAddToCart = async() =>{
-      console.log(id)
-      const data1 = await addToCart(id);
-      console.log("data1 is ",data1);
-      if(error){
-        if('data' in error){
-          const errorData = error as any;
-          console.log(errorData.message);
+    const handleAddToCart = async() => {
+        try {
+            await addToCart(id);
+        } catch (err) {
+            console.error("Error adding to cart:", err);
         }
-      }
     }
   
   return (

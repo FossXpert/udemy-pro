@@ -5,6 +5,7 @@ import { TbArrowBadgeRight } from "react-icons/tb";
 import { LuDot } from "react-icons/lu";
 import { MdOndemandVideo } from 'react-icons/md';
 import { useGetSingleCourseQuery } from '../../../redux/features/courses/courseApi';
+import { useSelector } from 'react-redux';
 
 type Props = {
   id: string;
@@ -26,6 +27,7 @@ const CoursePreview: FC<Props> = ({id}) => {
   const [isExpanded,setIsExpanded] = useState(false);
   const [selectedVideoUrl,setSelectedVideoUrl] = useState<string>("https://www.youtube.com/embed/4VSUrwbd0Jw?si=2spqWH3AgFbb32Jq")
   const [courseData,setCourseData]=useState<any>(null);
+  const { sSize, isMobile } = useSelector((state: any) => state.screen);
 
   useEffect(() => {
     if(data){
@@ -66,7 +68,7 @@ const CoursePreview: FC<Props> = ({id}) => {
       <div className='flex w-[97%] h-auto flex-col hehegreen'>
         <div className='flex w-[100%] h-full mt-2 mb-2 flex-col hehegreen'>
           {
-            <iframe width="full" height="full" 
+            <iframe width={isMobile ? "100%" : "700"} height={isMobile ? "300" : "400"} 
             src={selectedVideoUrl? selectedVideoUrl : "https://www.youtube.com/embed/4VSUrwbd0Jw?si=2spqWH3AgFbb32Jq"} 
             title="YouTube video player" 
             frameBorder="0"
@@ -121,9 +123,9 @@ const CoursePreview: FC<Props> = ({id}) => {
               <div className='flex items-center w-auto h-auto heheblack'>
               <p className='text-gray-700 text-[0.9rem] p-2'>{courseData.courseData.length} sections</p>
               <LuDot/>
-              <p className='text-gray-700 text-[0.9rem] p-2'>{courseData.courseData.length} sections</p>
+              {/* <p className='text-gray-700 text-[0.9rem] p-2'>{courseData.courseData.length} sections</p>
               <LuDot/>
-              <p className='text-gray-700 text-[0.9rem] p-2'>{courseData.courseData.length} sections</p>
+              <p className='text-gray-700 text-[0.9rem] p-2'>{courseData.courseData.length} sections</p> */}
               </div>
               <h4 className='p-2 heheblack text-[.9rem] pl-4 text-[#7F56D9] hover:text-blue-600'>Expand All Sections</h4>
             </div>
@@ -139,13 +141,13 @@ const CoursePreview: FC<Props> = ({id}) => {
                       <h4 className='w-[95%]'>{value.videoSection}</h4>
                       </div>
                     </div>                
-                    <div className='flex justify-between items-center w-[28%] heheblack'>
+                    {!isMobile && <div className='flex justify-between items-center w-[28%] heheblack'>
                       <div className='flex items-center w-auto heheblack'>
                       <p className='text-gray-700 text-[0.7rem] p-2'>{courseData.courseData.length} Lectures</p>
                       <LuDot/>
                       <p className='text-gray-700 text-[0.7rem] p-2'>{courseData.courseData.length} sections</p>
                       </div>
-                    </div>
+                    </div>}
                   </div>
                   {
                       courseSectionCountDropDown[index] &&

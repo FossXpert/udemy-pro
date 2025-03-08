@@ -133,7 +133,7 @@ const Cart = () => {
                   alt='text' width={125} height={90} />
                 <div className='flex flex-col w-[40%] h-auto rounded-sm p-2 '>
                     <h4 className='m-0 p-0 text-[1.1rem] font-semibold'>{course?.name}</h4>
-                      <button className='mt-6 w-[22%] bg-black border-none text-white px-4 py-2 rounded-md' onClick={()=>handleRemoveItem(value.product)}> {removeLoading ? "Removing..." : "Remove"}</button>
+                      <button className='button-global' onClick={()=>handleRemoveItem(value.product)}> {removeLoading ? "Removing..." : "Remove"}</button>
                 </div>
                 <div className='flex flex-col justify-center items-center border border-solid  border-gray-300 w-[10%] h-auto rounded-sm p-2 '>
                     <p>{value.price}</p>
