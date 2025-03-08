@@ -13,11 +13,11 @@ exports.courseRouter.post('/createcourse', userController_1.updateAccessToken, a
 exports.courseRouter.put('/updatecourse/:id', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), courseController_1.editCourse);
 exports.courseRouter.get('/get-single-course/:id', userController_1.updateAccessToken, auth_1.isAuthenticated, courseController_1.getSingleCourse);
 exports.courseRouter.get('/getallcourses', courseController_1.getAllCourses);
+exports.courseRouter.get('/getallcourse', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), courseController_1.getAllCourse); // admin wale page par
 exports.courseRouter.post('/get-course-content/:id', userController_1.updateAccessToken, auth_1.isAuthenticated, courseController_1.getCourseByUser);
-exports.courseRouter.post('/addquestion', userController_1.updateAccessToken, auth_1.isAuthenticated, courseController_1.addQuestion);
-exports.courseRouter.post('/addanswer', userController_1.updateAccessToken, auth_1.isAuthenticated, courseController_1.addAnswer);
-exports.courseRouter.post('/addreview/:id', userController_1.updateAccessToken, auth_1.isAuthenticated, courseController_1.addReview);
-exports.courseRouter.post('/addreviewreply', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), courseController_1.reviewReply);
-exports.courseRouter.get('/getallcourse', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), courseController_1.getAllCourse);
-exports.courseRouter.delete('/deletecoursebyid/:courseId', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), courseController_1.deleteCourseById);
-exports.courseRouter.post('/getvdocipherotp', courseController_1.generateVideoUrl);
+exports.courseRouter.delete('/deletecoursebyid/:courseId', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), courseController_1.deleteCourseById); // admin wale page par
+// courseRouter.post('/addquestion',updateAccessToken,isAuthenticated,addQuestion);//
+// courseRouter.post('/addanswer',updateAccessToken,isAuthenticated,addAnswer);//
+// courseRouter.post('/addreview/:id',updateAccessToken,isAuthenticated,addReview);//
+// courseRouter.post('/addreviewreply',updateAccessToken,isAuthenticated,validateUserRole('admin'),reviewReply);//
+// courseRouter.post('/getvdocipherotp',generateVideoUrl);

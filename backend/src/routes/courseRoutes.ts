@@ -9,11 +9,11 @@ courseRouter.post('/createcourse',updateAccessToken,isAuthenticated,validateUser
 courseRouter.put('/updatecourse/:id',updateAccessToken,isAuthenticated,validateUserRole('admin'),editCourse);
 courseRouter.get('/get-single-course/:id',updateAccessToken,isAuthenticated,getSingleCourse);
 courseRouter.get('/getallcourses',getAllCourses);
+courseRouter.get('/getallcourse',updateAccessToken,isAuthenticated,validateUserRole('admin'),getAllCourse);// admin wale page par
 courseRouter.post('/get-course-content/:id',updateAccessToken,isAuthenticated,getCourseByUser);
-courseRouter.post('/addquestion',updateAccessToken,isAuthenticated,addQuestion);
-courseRouter.post('/addanswer',updateAccessToken,isAuthenticated,addAnswer);
-courseRouter.post('/addreview/:id',updateAccessToken,isAuthenticated,addReview);
-courseRouter.post('/addreviewreply',updateAccessToken,isAuthenticated,validateUserRole('admin'),reviewReply);
-courseRouter.get('/getallcourse',updateAccessToken,isAuthenticated,validateUserRole('admin'),getAllCourse);
-courseRouter.delete('/deletecoursebyid/:courseId',updateAccessToken,isAuthenticated,validateUserRole('admin'),deleteCourseById);
-courseRouter.post('/getvdocipherotp',generateVideoUrl);
+courseRouter.delete('/deletecoursebyid/:courseId',updateAccessToken,isAuthenticated,validateUserRole('admin'),deleteCourseById);// admin wale page par
+// courseRouter.post('/addquestion',updateAccessToken,isAuthenticated,addQuestion);//
+// courseRouter.post('/addanswer',updateAccessToken,isAuthenticated,addAnswer);//
+// courseRouter.post('/addreview/:id',updateAccessToken,isAuthenticated,addReview);//
+// courseRouter.post('/addreviewreply',updateAccessToken,isAuthenticated,validateUserRole('admin'),reviewReply);//
+// courseRouter.post('/getvdocipherotp',generateVideoUrl);

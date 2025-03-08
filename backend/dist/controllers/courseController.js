@@ -63,8 +63,8 @@ exports.editCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res, nex
         if (!course) {
             return next(new errorHandlers_1.default('Failed to update course', 400));
         }
-        const allCourses = await course_1.default.find();
-        await redis_1.default?.set('courses', JSON.stringify(allCourses));
+        const createdCourse = await course_1.default.findById(courseId);
+        await redis_1.default?.set(createdCourse?._id.toString(), JSON.stringify(createdCourse));
         res.status(201).json({
             success: true,
             course
@@ -88,7 +88,7 @@ exports.getSingleCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res
             if (!courseMongo) {
                 return next(new errorHandlers_1.default('Failed to fetch single course', 400));
             }
-            await redis_1.default?.set(req.params.id, JSON.stringify(courseMongo));
+            // await redis?.set(req.params.id, JSON.stringify(courseMongo));
             return res.status(201).json({
                 success: true,
                 courseMongo
@@ -101,24 +101,24 @@ exports.getSingleCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res
 });
 exports.getAllCourses = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
     try {
-        const courses = await redis_1.default?.get('courses');
-        if (courses) {
-            return res.status(201).json({
-                success: true,
-                Allcourses: JSON.parse(courses)
-            });
+        // const courses = await redis?.get('courses');
+        // if (courses) {
+        //     return res.status(201).json({
+        //         success: true,
+        //         Allcourses: JSON.parse(courses)
+        //     })
+        // }
+        // else {
+        const coursesMongo = await course_1.default.find();
+        if (!coursesMongo) {
+            return next(new errorHandlers_1.default('Failed to fetch all course', 400));
         }
-        else {
-            const coursesMongo = await course_1.default.find();
-            if (!coursesMongo) {
-                return next(new errorHandlers_1.default('Failed to fetch all course', 400));
-            }
-            await redis_1.default?.set('courses', JSON.stringify(coursesMongo));
-            return res.status(201).json({
-                success: true,
-                Allcourses: coursesMongo
-            });
-        }
+        // await redis?.set('courses', JSON.stringify(coursesMongo));
+        return res.status(201).json({
+            success: true,
+            Allcourses: coursesMongo
+        });
+        // }
     }
     catch (error) {
         return next(new errorHandlers_1.default(error.message, 400));

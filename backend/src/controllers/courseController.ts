@@ -68,8 +68,8 @@ export const editCourse = catchAsyncError(async (req: Request, res: Response, ne
         if (!course) {
             return next(new ErrorHandler('Failed to update course', 400))
         }
-            const allCourses = await courseModel.find();
-            await redis?.set('courses', JSON.stringify(allCourses));
+        const createdCourse = await courseModel.findById(courseId);
+        await redis?.set(createdCourse?._id.toString(), JSON.stringify(createdCourse));
         res.status(201).json({
             success: true,
             course
@@ -92,7 +92,7 @@ export const getSingleCourse = catchAsyncError(async (req: Request, res: Respons
             if (!courseMongo) {
                 return next(new ErrorHandler('Failed to fetch single course', 400));
             }
-            await redis?.set(req.params.id, JSON.stringify(courseMongo));
+            // await redis?.set(req.params.id, JSON.stringify(courseMongo));
             return res.status(201).json({
                 success: true,
                 courseMongo
@@ -106,24 +106,24 @@ export const getSingleCourse = catchAsyncError(async (req: Request, res: Respons
 
 export const getAllCourses = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const courses = await redis?.get('courses');
-        if (courses) {
-            return res.status(201).json({
-                success: true,
-                Allcourses: JSON.parse(courses)
-            })
-        }
-        else {
+        // const courses = await redis?.get('courses');
+        // if (courses) {
+        //     return res.status(201).json({
+        //         success: true,
+        //         Allcourses: JSON.parse(courses)
+        //     })
+        // }
+        // else {
             const coursesMongo = await courseModel.find();
             if (!coursesMongo) {
                 return next(new ErrorHandler('Failed to fetch all course', 400));
             }
-            await redis?.set('courses', JSON.stringify(coursesMongo));
+            // await redis?.set('courses', JSON.stringify(coursesMongo));
             return res.status(201).json({
                 success: true,
                 Allcourses: coursesMongo
             })
-        }
+        // }
 
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 400));
