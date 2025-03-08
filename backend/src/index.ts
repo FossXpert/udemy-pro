@@ -17,16 +17,30 @@ import { Console } from "console";
 import cartRouter from "./routes/cartRouter";
 import mongoose from "mongoose";
 
+app.use(cors({
+    origin: [
+        "http://localhost:3000",
+        "https://udemy-pro.vercel.app",
+        "http://100.93.3.137:3000/",
+        "https://udemy-pro-backend.fossxpert.site"  // Add your backend domain
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  // Add OPTIONS for preflight
+    allowedHeaders: [
+        "Content-Type", 
+        "Authorization", 
+        "X-Requested-With", 
+        "Accept", 
+        "Origin"
+    ],
+    exposedHeaders: ["Set-Cookie"],
+    preflightContinue: true,
+}));
+
+app.options('*', cors()); // Enable preflight for all routes
+
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
-
-
-app.use(cors({
-    origin: ["http://localhost:3000",
-        "https://udemy-pro.vercel.app", "http://100.93.3.137:3000/"], // Add your frontend URL here
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-}));
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

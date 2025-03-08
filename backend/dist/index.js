@@ -19,14 +19,28 @@ const analyticsRouter_1 = __importDefault(require("./routes/analyticsRouter"));
 const layoutRouter_1 = __importDefault(require("./routes/layoutRouter"));
 const cartRouter_1 = __importDefault(require("./routes/cartRouter"));
 const mongoose_1 = __importDefault(require("mongoose"));
+app_1.app.use((0, cors_1.default)({
+    origin: [
+        "http://localhost:3000",
+        "https://udemy-pro.vercel.app",
+        "http://100.93.3.137:3000/",
+        "https://udemy-pro-backend.fossxpert.site" // Add your backend domain
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Add OPTIONS for preflight
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "X-Requested-With",
+        "Accept",
+        "Origin"
+    ],
+    exposedHeaders: ["Set-Cookie"],
+    preflightContinue: true,
+}));
+app_1.app.options('*', (0, cors_1.default)()); // Enable preflight for all routes
 app_1.app.use(express_1.default.json({ limit: '50mb' }));
 app_1.app.use((0, cookie_parser_1.default)());
-app_1.app.use((0, cors_1.default)({
-    origin: ["http://localhost:3000",
-        "https://udemy-pro.vercel.app", "http://100.93.3.137:3000/"], // Add your frontend URL here
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-}));
 cloudinary_1.default.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
