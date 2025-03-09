@@ -70,6 +70,7 @@ exports.getSingleCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res
         if (course) {
             return res.status(201).json({
                 success: true,
+                source: 'cache',
                 course: JSON.parse(course)
             });
         }
@@ -81,6 +82,7 @@ exports.getSingleCourse = (0, catchAsyncError_1.catchAsyncError)(async (req, res
             await redis_1.default?.set(req.params.id, JSON.stringify(course));
             return res.status(201).json({
                 success: true,
+                source: 'database',
                 course
             });
         }

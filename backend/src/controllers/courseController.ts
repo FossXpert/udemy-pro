@@ -70,8 +70,10 @@ export const getSingleCourse = catchAsyncError(async (req: Request, res: Respons
     try {
         const course = await redis?.get(req.params.id);
         if (course) {
+
             return res.status(201).json({
                 success: true,
+                source: 'cache',
                 course: JSON.parse(course)
             })
         } else {
@@ -82,6 +84,7 @@ export const getSingleCourse = catchAsyncError(async (req: Request, res: Respons
             await redis?.set(req.params.id, JSON.stringify(course));
             return res.status(201).json({
                 success: true,
+                source: 'database',
                 course
             })
         }
