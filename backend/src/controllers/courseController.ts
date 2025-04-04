@@ -168,30 +168,7 @@ export const getCourseByUser = catchAsyncError(async (req: Request, res: Respons
     }
 })
 
-export const deleteBoughtCourseById = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
-    try {
-        const {id} = req.params;
-        console.log("id",id);
-        const user = (req as jwtPayloadNew).user;
-        const course = await courseModel.findById(id);
-        if(!course){
-            return next(new ErrorHandler('Course not found',400));
-        }
-        const isCourseExist = user.courses.some((a:any)=> a.courseId.toString() === id.toString());
-        if(!isCourseExist){
-            return next(new ErrorHandler('You are not allowed to delete this course',400));
-        }
-        await course.deleteOne({courseId:id});
 
-        return res.status(200).json({
-            success:true,
-            message:"Course deleted successfully"
-        })
-
-    } catch (error:any) {
-        return next(new ErrorHandler(error.message,400));
-    }
-})
 
 //create questions and answer
 interface iAddQuestionData {

@@ -20,4 +20,5 @@ userRouter.put('/updateprofilepic', userController_1.updateAccessToken, auth_1.i
 userRouter.get('/getalluser', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), userController_1.getAllUser);
 userRouter.post('/changerole', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), userController_1.updateUserRole);
 userRouter.post('/deleteuser/:userId', userController_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.validateUserRole)('admin'), userController_1.deleteUserById);
+userRouter.post('/deleteboughtcoursebyid', userController_1.updateAccessToken, auth_1.isAuthenticated, userController_1.deleteBoughtCourseById);
 exports.default = userRouter;

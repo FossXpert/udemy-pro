@@ -2,6 +2,8 @@ import { CardLoader } from '../../../app/util/CardLoader'
 import React, { useEffect } from 'react'
 import CourseCard from '../All/CourseCard'
 import { useLoadUserQuery } from '../../../redux/features/api/apiSlice'
+import { useDeleteBoughtCourseByIdMutation } from '../../../redux/features/courses/courseApi'
+import toast from 'react-hot-toast'
 
 type Props = {}
 
@@ -13,6 +15,23 @@ const EnrolledCourses = (props: Props) => {
       console.log('data',data);
     }
   }, [refetch]);
+
+  const [deleteBoughtCourseById,{isSuccess:deleteSuccess,isLoading:deleteLoading,error:deleteError}] = useDeleteBoughtCourseByIdMutation();
+  const onDelete = async (id:string) => {
+    console.log("id",id);
+    await deleteBoughtCourseById(id);
+    refetch();
+  }
+
+  useEffect(() => {
+    if(deleteSuccess){
+      toast.success("Course deleted successfully");
+      refetch();
+    }
+    if(deleteError){
+      toast.error("Error deleting course");
+    }
+  }, [deleteSuccess, deleteError, refetch]);
   return (
     <>
     {isLoading && <CardLoader length={1} />}
@@ -33,9 +52,7 @@ const EnrolledCourses = (props: Props) => {
                     demoUrl={value.courseDemoUrl}
                     totalVideos={value.courseTotalVideos}
                     path={`all/courses`}
-                    onDelete={() => {
-                      console.log("delete");
-                    }}
+                    onDelete={() => onDelete(value.courseId)}
                     showDelete={true}
                   />
               ))

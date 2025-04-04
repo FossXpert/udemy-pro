@@ -200,7 +200,32 @@ export const getUserInfo = catchAsyncError(async(req:Request,res:Response,next:N
         return next(new ErrorHandler(error.message,400));
     }
 })
+export const deleteBoughtCourseById = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+        const courseId = req.body._id;
+        console.log("Deleting course with ID:", courseId);
+        
+        const user = (req as jwtPayloadNew).user;
 
+        const updatedUser = await userModel.findByIdAndUpdate(
+            user._id,
+            { $pull: { courses: { courseId: courseId } } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return next(new ErrorHandler("User not found", 400));
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Course removed from your purchased courses successfully"
+        });
+
+    } catch (error:any) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+})
 interface iSocialBody {
     email:string;
     name:string;

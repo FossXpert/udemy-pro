@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserById = exports.updateUserRole = exports.getAllUser = exports.updateProfilePicture = exports.updatePassword = exports.updateUserInfo = exports.socialAuth = exports.getUserInfo = exports.updateAccessToken = exports.logoutUser = exports.loginUser = exports.activateUser = exports.userTokenActivation = exports.registrationUser = void 0;
+exports.deleteUserById = exports.updateUserRole = exports.getAllUser = exports.updateProfilePicture = exports.updatePassword = exports.updateUserInfo = exports.socialAuth = exports.deleteBoughtCourseById = exports.getUserInfo = exports.updateAccessToken = exports.logoutUser = exports.loginUser = exports.activateUser = exports.userTokenActivation = exports.registrationUser = void 0;
 require('dotenv').config();
 const errorHandlers_1 = __importDefault(require("../utills/errorHandlers"));
 const catchAsyncError_1 = require("../middlewares/catchAsyncError");
@@ -169,6 +169,24 @@ exports.getUserInfo = (0, catchAsyncError_1.catchAsyncError)(async (req, res, ne
         const id = req.user._id;
         console.log("get userinfi id", id);
         await (0, userServices_1.getUserById)(id, res, next);
+    }
+    catch (error) {
+        return next(new errorHandlers_1.default(error.message, 400));
+    }
+});
+exports.deleteBoughtCourseById = (0, catchAsyncError_1.catchAsyncError)(async (req, res, next) => {
+    try {
+        const courseId = req.body._id;
+        console.log("Deleting course with ID:", courseId);
+        const user = req.user;
+        const updatedUser = await user_1.userModel.findByIdAndUpdate(user._id, { $pull: { courses: { courseId: courseId } } }, { new: true });
+        if (!updatedUser) {
+            return next(new errorHandlers_1.default("User not found", 400));
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Course removed from your purchased courses successfully"
+        });
     }
     catch (error) {
         return next(new errorHandlers_1.default(error.message, 400));

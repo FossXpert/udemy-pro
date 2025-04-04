@@ -1,5 +1,5 @@
 import express from 'express';
-import {activateUser, deleteUserById, getAllUser, getUserInfo, loginUser, logoutUser, registrationUser,
+import {activateUser, deleteUserById,deleteBoughtCourseById, getAllUser, getUserInfo, loginUser, logoutUser, registrationUser,
     socialAuth, updateAccessToken, updatePassword, updateProfilePicture, updateUserInfo,
     updateUserRole} from '../controllers/userController';
 import { isAuthenticated, validateUserRole } from '../middlewares/auth';
@@ -19,7 +19,7 @@ userRouter.put('/updateprofilepic',updateAccessToken,isAuthenticated,updateProfi
 userRouter.get('/getalluser',updateAccessToken,isAuthenticated,validateUserRole('admin'),getAllUser);
 userRouter.post('/changerole',updateAccessToken,isAuthenticated,validateUserRole('admin'),updateUserRole);
 userRouter.post('/deleteuser/:userId',updateAccessToken,isAuthenticated,validateUserRole('admin'),deleteUserById);
-
+userRouter.post('/deleteboughtcoursebyid',updateAccessToken,isAuthenticated,deleteBoughtCourseById);
 
 
 export default userRouter;

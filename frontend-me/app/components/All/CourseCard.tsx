@@ -28,7 +28,7 @@ type Props = {
     cartDisable : boolean;
     path : string;
     showDelete?: boolean;
-    onDelete?: () => void;
+    onDelete?: (id:string) => void;
 }
 const border = '';
 const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos,cartDisable,path, showDelete = false, onDelete}) => {
@@ -74,11 +74,6 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
         }
     }
   
-  
-    const handleDelete = async () => {
-      await deleteBoughtCourseById(id);
-    };
-
   return (
     <>
         <div onClick={handleOnClick} className={`flex flex-col bg-[rgb(249,250,251)] w-[250px] h-[310px] p-2 ${border} border-[1px] border-solid border-gray-300 rounded-sm shadow-md shadow-grey-700`}>
@@ -143,7 +138,8 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
                       className='bg-red-500 hover:bg-red-600 text-white rounded-md px-2 !h-[1.5rem] text-sm'
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDelete();
+                        onDelete?.(id);
+                        console.log("id in button",id);
                       }}
                     >
                       Delete
