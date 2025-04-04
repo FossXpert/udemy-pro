@@ -12,7 +12,7 @@ courseRouter.get('/getallcourses',getAllCourses);
 courseRouter.get('/getallcourse',updateAccessToken,isAuthenticated,validateUserRole('admin'),getAllCourse);// admin wale page par
 courseRouter.post('/get-course-content/:id',updateAccessToken,isAuthenticated,getCourseByUser);
 courseRouter.delete('/deletecoursebyid/:courseId',updateAccessToken,isAuthenticated,validateUserRole('admin'),deleteCourseById);// admin wale page par
-courseRouter.post('/deleteboughtcoursebyid/:courseId',updateAccessToken,isAuthenticated,deleteBoughtCourseById);// user wale page par
+courseRouter.post('/deleteboughtcoursebyid/:courseId',updateAccessToken,isAuthenticated,deleteBoughtCourseById);// user wale page pe
 // courseRouter.post('/addquestion',updateAccessToken,isAuthenticated,addQuestion);//
 // courseRouter.post('/addanswer',updateAccessToken,isAuthenticated,addAnswer);//
 // courseRouter.post('/addreview/:id',updateAccessToken,isAuthenticated,addReview);//
