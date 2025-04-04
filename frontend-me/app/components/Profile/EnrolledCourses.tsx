@@ -33,6 +33,10 @@ const EnrolledCourses = (props: Props) => {
                     demoUrl={value.courseDemoUrl}
                     totalVideos={value.courseTotalVideos}
                     path={`all/courses`}
+                    onDelete={() => {
+                      console.log("delete");
+                    }}
+                    showDelete={true}
                   />
               ))
             ) : (

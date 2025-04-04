@@ -1,12 +1,10 @@
 import Image from 'next/image';
 import React, { FC, useEffect } from 'react'
-import thumbnail from '../../assets/zoom.png';
 import Rating from '@mui/material/Rating';
-import { MdOutlineFormatListNumbered } from 'react-icons/md';
-import Link from 'next/link';
 import { useAddToCartMutation, useGetCartStatusQuery } from '../../../redux/features/cart/cartApi';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useDeleteBoughtCourseByIdMutation, useDeleteSingleCourseMutation } from '../../../redux/features/courses/courseApi';
 
 
 
@@ -29,12 +27,15 @@ type Props = {
     totalVideos : string;
     cartDisable : boolean;
     path : string;
+    showDelete?: boolean;
+    onDelete?: () => void;
 }
 const border = '';
-const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos,cartDisable,path}) => {
+const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbnail,level,demoUrl,totalVideos,cartDisable,path, showDelete = false, onDelete}) => {
   
   const [addToCart,{isSuccess,isLoading,error}] = useAddToCartMutation();
   const {refetch} = useGetCartStatusQuery({},{refetchOnMountOrArgChange:true});
+  const [deleteBoughtCourseById,{isSuccess:deleteSuccess,isLoading:deleteLoading,error:deleteError}] = useDeleteBoughtCourseByIdMutation();
   const router = useRouter();
 
   useEffect(() => {
@@ -73,6 +74,11 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
         }
     }
   
+  
+    const handleDelete = async () => {
+      await deleteBoughtCourseById(id);
+    };
+
   return (
     <>
         <div onClick={handleOnClick} className={`flex flex-col bg-[rgb(249,250,251)] w-[250px] h-[310px] p-2 ${border} border-[1px] border-solid border-gray-300 rounded-sm shadow-md shadow-grey-700`}>
@@ -117,8 +123,32 @@ const CourseCard:FC<Props> = ({id,name,postedBy,price,estimatedPrice,tags,thumbn
                     </p>
                   )}
                 </div>
-                <div className='flex'>
-                  {cartDisable ?"Enrolled": <button className='button-global !h-[1.5rem]' onClick={()=>handleAddToCart()}>{isLoading ? "Adding..." : "Add to Cart"}</button>}
+                <div className='flex gap-2'>
+                  {cartDisable ? (
+                    <span className="text-green-600 font-medium">Enrolled</span>
+                  ) : (
+                    <button 
+                      className='button-global !h-[1.5rem]' 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart();
+                      }}
+                    >
+                      {isLoading ? "Adding..." : "Add to Cart"}
+                    </button>
+                  )}
+                  
+                  {showDelete && (
+                    <button 
+                      className='bg-red-500 hover:bg-red-600 text-white rounded-md px-2 !h-[1.5rem] text-sm'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete();
+                      }}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
